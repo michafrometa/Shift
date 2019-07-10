@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Agreement extends Model
+{
+    /**
+     * The table associated with the model.
+     * @var string
+     */
+    protected $table = 'shift_agreements';
+
+    public function examprice()
+    {
+        return $this->belongsTo('App\Models\ExamPrice');
+    }
+
+    public function service_order()
+    {
+        return $this->belongsTo('App\Models\ServiceOrder');
+    }
+}
