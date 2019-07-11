@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sector extends Model
+class Gender extends Model
 {
     /**
      * The table associated with the model.
      * @var string
      */
-    protected $table = 'shift_sectors';
+    protected $table = 'shift_ngenders';
 
-    public function exam()
+    public function patient()
     {
-        return $this->hasOne('App\Models\Exam');
+        return $this->hasMany('App\Models\Patient');
     }
 }

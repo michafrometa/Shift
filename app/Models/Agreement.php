@@ -14,11 +14,11 @@ class Agreement extends Model
 
     public function examprice()
     {
-        return $this->belongsTo('App\Models\ExamPrice');
+        return $this->hasOne('App\Models\ExamPrice');
     }
 
     public function service_order()
     {
-        return $this->belongsTo('App\Models\ServiceOrder');
+        return $this->hasOne('App\Models\ServiceOrder');
     }
 }

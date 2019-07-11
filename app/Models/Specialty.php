@@ -14,6 +14,6 @@ class Specialty extends Model
 
     public function doctor()
     {
-        return $this->belongsTo('App\Models\Doctor');
+        return $this->hasOne('App\Models\Doctor');
     }
 }

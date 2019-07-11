@@ -14,16 +14,16 @@ class Neighborhood extends Model
 
     public function post_collection()
     {
-        return $this->belongsTo('App\Models\PostCollection');
+        return $this->hasOne('App\Models\PostCollection');
     }
 
     public function patient()
     {
-        return $this->belongsTo('App\Models\Patient');
+        return $this->hasOne('App\Models\Patient');
     }
 
     public function city()
     {
-        return $this->belongsTo('App\Models\City');
+        return $this->hasOne('App\Models\City');
     }
 }

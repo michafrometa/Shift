@@ -14,11 +14,11 @@ class ServiceOrderExam extends Model
 
     public function exam()
     {
-        return $this->hasOne('App\Models\Exam');
+        return $this->belongsTo('App\Models\Exam');
     }
 
     public function service_order()
     {
-        return $this->hasOne('App\Models\ServiceOrder');
+        return $this->belongsTo('App\Models\ServiceOrder');
     }
 }

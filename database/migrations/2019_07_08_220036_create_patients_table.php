@@ -17,11 +17,12 @@ class CreatePatientsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('name');
-            $table->string('gender');
             $table->date('birthdate');
             $table->longtext('address');
             $table->unsignedBigInteger('neighborhood_id');
             $table->foreign('neighborhood_id')->references('id')->on('shift_neighborhoods');
+            $table->unsignedBigInteger('gender_id');
+            $table->foreign('gender_id')->references('id')->on('shift_ngenders');
         });
     }
 

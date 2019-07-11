@@ -15,10 +15,10 @@ class ExamPrice extends Model
 
     public function exam()
 {
-    return $this->hasOne('App\Models\Exam');
+    return $this->belongsTo('App\Models\Exam');
 }
     public function agreement()
     {
-        return $this->hasOne('App\Models\Agreement');
+        return $this->belongsTo('App\Models\Agreement');
     }
 }

@@ -16,8 +16,7 @@ class CreateServiceOrdersTable extends Migration
         Schema::create('shift_service_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            /*$table->date('date');*/
-            /*todo el date lo va a dar el created_at del timestamp*/
+            $table->date('date');
             $table->unsignedBigInteger('agreement_id');
             $table->foreign('agreement_id')->references('id')->on('shift_agreements');
             $table->unsignedBigInteger('post_collection_id');

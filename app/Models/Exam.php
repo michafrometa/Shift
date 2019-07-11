@@ -14,16 +14,16 @@ class Exam extends Model
 
     public function examprice()
     {
-        return $this->belongsTo('App\Models\ExamPrice');
+        return $this->hasOne('App\Models\ExamPrice');
     }
 
     public function sector()
     {
-        return $this->hasOne('App\Models\Sector');
+        return $this->belongsTo('App\Models\Sector');
     }
 
     public function service_order_exam()
     {
-        return $this->belongsTo('App\Models\ServiceOrderExam');
+        return $this->hasOne('App\Models\ServiceOrderExam');
     }
 }

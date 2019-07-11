@@ -14,11 +14,11 @@ class City extends Model
 
     public function post_collection()
     {
-        return $this->belongsTo('App\Models\PostCollection');
+        return $this->hasOne('App\Models\PostCollection');
     }
 
     public function neighborhood()
     {
-        return $this->hasOne('App\Models\Neighborhood');
+        return $this->belongsTo('App\Models\Neighborhood');
     }
 }

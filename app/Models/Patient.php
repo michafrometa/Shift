@@ -14,11 +14,16 @@ class Patient extends Model
 
     public function service_order()
     {
-        return $this->belongsTo('App\Models\ServiceOrder');
+        return $this->hasOne('App\Models\ServiceOrder');
     }
 
     public function neighborhood()
     {
-        return $this->hasOne('App\Models\Neighborhood');
+        return $this->belongsTo('App\Models\Neighborhood');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo('App\Models\Gender');
     }
 }

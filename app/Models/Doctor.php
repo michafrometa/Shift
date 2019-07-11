@@ -14,11 +14,11 @@ class Doctor extends Model
 
     public function service_order()
     {
-        return $this->belongsTo('App\Models\ServiceOrder');
+        return $this->hasOne('App\Models\ServiceOrder');
     }
 
     public function specialty()
     {
-        return $this->hasOne('App\Models\Specialty');
+        return $this->belongsTo('App\Models\Specialty');
     }
 }
