@@ -82,6 +82,7 @@ class ServiceOrderController extends Controller
             return DB::transaction(function () use ($request) {
                 $service_order=$this->service_order->fill($request->all());
                 $service_order->save();
+                return response(__('messages.app.document.state', ['operation' => 'insertado']), Response::HTTP_CREATED);
             });
         } catch (Exception $exception) {
             return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
