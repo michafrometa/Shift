@@ -5,13 +5,13 @@
  */
 
 require('./bootstrap');
+import axios from "axios";
 
 window.Vue = require('vue');
 
 import Vuetify from 'vuetify';
 
 window.Vue.use(Vuetify);
-
 
 
 import App from './components/App'
@@ -36,9 +36,21 @@ Vue.component('App', require('./components/App.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+const router = createRouter();
+
+
+window.async_call = function (url, headers, method = 'get') {
+    return axios({
+        url: url,
+        headers: headers,
+        method: method
+    })
+}
 
 const app = new Vue({
     el: '#app',
     components: {App},
-    createRouter
+    router,
+
 });
+window.app = app;

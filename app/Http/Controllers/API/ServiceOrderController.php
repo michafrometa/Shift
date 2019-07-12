@@ -58,7 +58,7 @@ class ServiceOrderController extends Controller
      */
     public function index()
     {
-        return datatables()->of($this->service_order
+      /*  return datatables()->of($this->service_order
             ->with(array(
                 'agreement:id,description',
                 'post_collection:id,description',
@@ -67,7 +67,17 @@ class ServiceOrderController extends Controller
                 'patient.neighborhood:id,description',
                 'doctor:id,specialty_id,name',
                 'doctor.specialty:id,description'
-            )))->toJson();
+            )))->toJson();*/
+      return $this->service_order
+            ->with(array(
+                'agreement:id,description',
+                'post_collection:id,description',
+                'patient:id,name,birthdate,neighborhood_id,gender_id',
+                'patient.gender:id,value',
+                'patient.neighborhood:id,description',
+                'doctor:id,specialty_id,name',
+                'doctor.specialty:id,description'
+            ))->get();
     }
 
     /**

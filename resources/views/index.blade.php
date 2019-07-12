@@ -13,6 +13,7 @@
 
     <!-- Main styles for this application -->
     <link href="{{('css/app.css')}}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
     <script>
 
         window.Laravel = {!! json_encode(['csrfToken' => csrf_token()]) !!};
