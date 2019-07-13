@@ -14,4 +14,5 @@ return [
         'send_email' => 'Notificación enviada correctamente.',
         'no_send_email' => 'La notificación no se envió por la siguiente razón: :reason'
     ]
+
 ];

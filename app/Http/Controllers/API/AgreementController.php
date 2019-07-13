@@ -8,6 +8,21 @@ use App\Http\Controllers\Controller;
 
 class AgreementController extends Controller
 {
+
+    const SUBJECT = 'Agreement';
+
+    /**@var Agreement $agreement */
+    protected $agreement;
+
+    /**
+     * AgreementController constructor.
+     * @param Agreement $agreement
+     */
+    public function __construct(Agreement $agreement)
+    {
+        $this->agreement = $agreement;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -62,4 +77,10 @@ class AgreementController extends Controller
     {
         //
     }
+    public function getagreementsBy(Request $request)
+    {
+        return $this->agreement->select('id', 'description')->where("description", 'like', '%'. $request->input('search'). '%')->get();
+    }
+
+
 }

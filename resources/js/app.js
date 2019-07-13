@@ -39,10 +39,10 @@ Vue.component('App', require('./components/App.vue').default);
 const router = createRouter();
 
 
-window.async_call = function (url, headers, method = 'get') {
+window.async_call = function (url, data, method = 'get') {
     return axios({
         url: url,
-        headers: headers,
+        data: data,
         method: method
     })
 }

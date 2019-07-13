@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 */
 
 
-
 //<editor-fold defaultstate="collapsed" desc="Autentication">
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -23,10 +22,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 //<editor-fold defaultstate="collapsed" desc="ServiceOrder">
-    Route::apiResources([
-        'service_order' => 'API\ServiceOrderController',
-    ]);
+Route::apiResources([
+    'service_order' => 'API\ServiceOrderController',
+]);
 //</editor-fold>
 
-
+//<editor-fold defaultstate="collapsed" desc="Agreements">
+Route::apiResources([
+    'agreements' => 'API\AgreementController',
+]);
+Route::post('/getagreementsBy', 'API\AgreementController@getagreementsBy');
+//</editor-fold>
 
