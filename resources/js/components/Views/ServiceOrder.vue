@@ -1,6 +1,5 @@
 <template>
     <crud
-            :url="url"
             :headers="headers"
             :editedItem="editedItem"
             :defaultItem="defaultItem"
@@ -90,8 +89,7 @@
         },
         data: function () {
             return {
-                url: 'api/service_order',
-                view_name: "Service orders",
+                view_name: "service_order",
                 crud_action: '',
                 headers: [
                     {

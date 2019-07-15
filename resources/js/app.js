@@ -1,5 +1,4 @@
 import es from "./locale/es";
-import VueInternalization from 'vue-i18n';
 import Locales from '../assets/js/vue-i18n-locales.generated';
 import Vuex from 'vuex';
 require('./bootstrap');

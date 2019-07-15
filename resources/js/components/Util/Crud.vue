@@ -5,7 +5,7 @@
         >
         </custom-snackbar>
         <v-toolbar flat color="white">
-            <v-toolbar-title><!--{{view_name}}-->{{ $t('messages.subjects.service_order') }}</v-toolbar-title>
+            <v-toolbar-title>{{ $t('messages.' + view_name) }}</v-toolbar-title>
             <v-divider
                     class="mx-2"
                     inset
@@ -15,14 +15,14 @@
             <v-text-field
                     v-model="search"
                     append-icon="search"
-                    label="Search"
+                    :label="$t('messages.search')"
                     single-line
                     hide-details
             ></v-text-field>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
                 <template v-slot:activator="{ on }">
-                    <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+                    <v-btn color="primary" dark class="mb-2" v-on="on">{{ $t('messages.new_item') }}</v-btn>
                 </template>
                 <v-card>
                     <v-card-title>
@@ -88,7 +88,7 @@
             CustomSnackbar
         },
         data: () => ({
-            snackbar:{
+            snackbar: {
                 text: '',
                 color: 'success'
             },
@@ -99,8 +99,11 @@
             items: []
         }),
         computed: {
+            real_url() {
+                return this.url ? this.url : 'api/' + this.view_name
+            },
             formTitle() {
-                return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+                return this.editedIndex === -1 ? this.$t('messages.new_item') : this.$t('messages.edit_item')
             }
         },
         created() {
@@ -111,7 +114,8 @@
                 type: String
             },
             view_name: {
-                type: String
+                type: String,
+                required: true
             },
             headers: {
                 type: Array,
@@ -136,9 +140,9 @@
             deleteItem(item) {
                 this.set_action("delete")
                 const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') &&
+                confirm(this.$t('messages.sure_to_delete')) &&
 
-                async_call(this.url+'/'+ item.id, {id: item.id}, 'delete')
+                async_call(this.real_url + '/' + item.id, {id: item.id}, 'delete')
                     .then((item) => {
                         this.notify(item.data)
                         this.initialize()
@@ -156,16 +160,16 @@
                 }, 300)
             },
             notify(text, color = 'success') {
-                this.snackbar={
-                    text:text,
-                    color:color
+                this.snackbar = {
+                    text: text,
+                    color: color
                 }
             },
             save() {
                 this.$validator.validate().then(result => {
                     if (result) {
                         if (this.editedIndex > -1) {
-                            async_call(this.url+'/'+this.editedItem.id, this.editedItem, 'put')
+                            async_call(this.real_url + '/' + this.editedItem.id, this.editedItem, 'put')
                                 .then((item) => {
 
                                     this.notify(item.data)
@@ -175,7 +179,7 @@
                                 this.notify(err.response.data, 'error')
                             });
                         } else {
-                            async_call(this.url, this.editedItem, 'post')
+                            async_call(this.real_url, this.editedItem, 'post')
                                 .then((item) => {
                                     this.notify(item.data)
                                     this.initialize()
@@ -205,7 +209,7 @@
                 return grandchild;
             },
             initialize() {
-                async_call(this.url)
+                async_call(this.real_url)
                     .then((item) => {
                         this.items = item.data
                     })

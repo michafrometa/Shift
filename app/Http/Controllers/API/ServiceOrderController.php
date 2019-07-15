@@ -118,7 +118,7 @@ class ServiceOrderController extends Controller
                 ));
 
         } catch (ModelNotFoundException $exception) {
-            return response(__('messages.response.not_found', ['subject' => trans_choice('messages.subjects.' . $this::SUBJECT, 1)]), Response::HTTP_NOT_FOUND);
+            return response(__('messages.response.not_found', ['subject' => trans_choice('messages.' . $this::SUBJECT, 1)]), Response::HTTP_NOT_FOUND);
         } catch (Exception $exception) {
             Log::error($exception->getMessage());
             return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
