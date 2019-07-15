@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        Artisan::call('vendor:publish --provider="MartinLindhe\VueInternationalizationGenerator\GeneratorProvider"');
+        Artisan::call('vue-i18n:generate');
+
     }
 }

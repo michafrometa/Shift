@@ -75,7 +75,6 @@
             </template>
         </v-data-table>
     </div>
-
 </template>
 
 <script>
@@ -106,7 +105,9 @@
                 return this.editedIndex === -1 ? this.$t('messages.new_item') : this.$t('messages.edit_item')
             }
         },
+
         created() {
+
             this.initialize()
         },
         props: {
