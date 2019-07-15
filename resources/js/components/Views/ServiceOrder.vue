@@ -1,63 +1,87 @@
 <template>
-    <CRUD
+    <crud
             :url="url"
             :headers="headers"
             :editedItem="editedItem"
             :defaultItem="defaultItem"
+            :item_indexes="item_indexes"
             :view_name="view_name"
             @fill_form="fill_form"
+            @form_errors="form_errors"
+            v-bind:action.sync="crud_action"
     >
         <template v-slot:form_content="{ crud }">
             <v-flex xs12 sm6 md4>
 
                 <custom-select
-                        url="api/getagreementsBy"
-                        v-model="editedItem.agreement"
+                        url="api/agreementsBy"
+                        v-validate="'required'"
+                        v-model="agreement"
                         label="Agreement"
-                        type="autocomplete"
+                        display="description"
+                        name="agreement"
                 >
                 </custom-select>
+                <span>{{ errors.first('agreement') }}</span>
 
             </v-flex>
             <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.post_collection" label="Post Collection"></v-text-field>
-                <v-autocomplete
-                        hide-no-data
-                        hide-selected
-                        :items="form_select_inputs.post_collections"
-                        v-model="editedItem.agreement"
+
+                <custom-select
+                        url="api/postcollectionsBy"
+                        v-validate="'required'"
+                        v-model="post_collection"
                         label="Post Collection"
-                        :search-input.sync="search"
-                ></v-autocomplete>
+                        display="description"
+                >
+                </custom-select>
             </v-flex>
             <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.patient" label="Patient"></v-text-field>
+
+                <custom-select
+                        url="api/patientsBy"
+                        v-validate="'required'"
+                        v-model="patient"
+                        label="Patient"
+                        display="name"
+                >
+                </custom-select>
             </v-flex>
             <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.doctor" label="Doctor"></v-text-field>
+                <custom-select
+                        url="api/doctorsBy"
+                        v-validate="'required'"
+                        v-model="doctor"
+                        label="Doctor"
+                        display="name"
+                >
+                </custom-select>
             </v-flex>
             <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.date" label="Date"></v-text-field>
+                <!--todo selected date has to be today on new item-->
+                <custom-datepicker v-validate="'required'" v-model="editedItem.date" label="Date"></custom-datepicker>
             </v-flex>
         </template>
-    </CRUD>
+    </crud>
 </template>
 
 <script>
     import CustomSelect from '../Util/Select';
-    import CRUD from '../Util/CRUD';
+    import CustomDatepicker from '../Util/Datepicker';
+    import Crud from '../Util/Crud';
 
     export default {
         name: "ServiceOrder",
         components: {
             CustomSelect,
-            CRUD
+            CustomDatepicker,
+            Crud
         },
         data: function () {
             return {
-                url: 'service_order',
+                url: 'api/service_order',
                 view_name: "Service orders",
-
+                crud_action: '',
                 headers: [
                     {
                         text: 'Agreement',
@@ -70,20 +94,20 @@
                     {text: 'Date', value: 'date'},
                     {text: 'Actions', value: 'name', sortable: false, no_td: true}
                 ],
-
+                item_indexes: ['agreement_id', 'post_collection_id', 'patient_id', 'doctor_id', 'doctor_id', 'date'],
                 editedItem: {
-                    agreement: 'None',
-                    post_collection: 0,
-                    patient: 0,
-                    doctor: 0,
-                    date: 0
+                    agreement_id: 'None',
+                    post_collection_id: 'None',
+                    patient_id: 'None',
+                    doctor_id: 'None',
+                    date: null
                 },
                 defaultItem: {
-                    agreement: 'None',
-                    post_collection: 0,
-                    patient: 0,
-                    doctor: 0,
-                    date: 0
+                    agreement_id: 'None',
+                    post_collection_id: 'None',
+                    patient_id: 'None',
+                    doctor_id: 'None',
+                    date: null
                 },
                 form_select_inputs: {
                     agreements: [],
@@ -93,13 +117,70 @@
                 }
             }
         },
-
+        computed: {
+            agreement: {
+                get: function () {
+                    if (this.crud_action === 'update') {
+                        return this.editedItem.agreement
+                    } else {
+                        return this.editedItem.agreement_id
+                    }
+                },
+                set: function (id) {
+                    this.editedItem.agreement_id = id
+                }
+            }, post_collection: {
+                get: function () {
+                    if (this.crud_action === 'update') {
+                        return this.editedItem.post_collection
+                    } else {
+                        return this.editedItem.post_collection_id
+                    }
+                },
+                set: function (id) {
+                    this.editedItem.post_collection_id = id
+                }
+            },
+            patient: {
+                get: function () {
+                    if (this.crud_action === 'update') {
+                        return this.editedItem.patient
+                    } else {
+                        return this.editedItem.patient_id
+                    }
+                },
+                set: function (id) {
+                    this.editedItem.patient_id = id
+                }
+            }, doctor: {
+                get: function () {
+                    if (this.crud_action === 'update') {
+                        return this.editedItem.doctor
+                    } else {
+                        return this.editedItem.doctor_id
+                    }
+                },
+                set: function (id) {
+                    this.editedItem.doctor_id = id
+                }
+            }
+        },
         methods: {
             fill_form(item) {
                 this.editedItem = item
             },
+            form_errors(response) {
+                /*fixme VeeValidate Validation errors not showing*/
+                for (let field in response) {
+                    if (response.hasOwnProperty(field)) {
+                        this.$validator.errors.add({
+                            field: field,
+                            msg: response[field][0]
+                        });
+                    }
+                }
+            },
         },
-
     }
 
 </script>

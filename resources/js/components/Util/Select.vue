@@ -1,8 +1,6 @@
 <template v-if="type==='select'">
     <v-autocomplete
-            hide-no-data
             hide-selected
-            cache-items
             :items="items"
             v-model="model"
             :loading="loading"
@@ -12,9 +10,7 @@
 </template>
 <template v-else-if="type==='autocomplete'">
     <v-autocomplete
-            hide-no-data
             hide-selected
-            cache-items
             :items="items"
             :loading="loading"
             v-model="model"
@@ -34,20 +30,18 @@
                 model: null
             }
         },
-        mounted() {
-            this.model = this.value;
-        },
         props: {
-
             value: [Array, String, Number, Object],
             label: {
                 type: String,
                 required: true
             },
-
             type: {
                 type: String,
-                default: 'select'
+                default: 'autocomplete',
+                validator: function (value) {
+                    return ['autocomplete', 'select'].indexOf(value) !== -1
+                }
             },
             method: {
                 type: String,
@@ -56,37 +50,58 @@
             url: {
                 type: String
             },
-            label: {
+            display: {
                 type: String
+            },
+            track_by: {
+                type: String,
+                default:
+                    "id"
             }
         },
         watch: {
             search(val) {
+                /*fixme should not api search when model is already selected item*/
                 val && this.querySelections(val)
             },
-            model(val){
-                this.$emit('input',val)
+            model(val) {
+                this.$emit('input', val)
+            },
+            value(val) {
+                if (isNull(val)) {
+                    this.model = null
+                    this.items = []
+                } else {
+                    if (typeof val === 'number') {
+                        this.model = val
+                    } else if (typeof val === 'object') {
+                        this.items = [{'value': val[this.track_by], 'text': val[this.display]}]
+                        this.model = val[this.track_by]
+                    }else if (val ==='None'){
+                        this.model = null
+                        this.items = []
+                    }
+                    else{
+                        console.log('Another posibility :' + val)
+                    }
+                }
             }
-        },
+        }
+        ,
         methods: {
             querySelections(v) {
                 this.loading = true
                 async_call(this.url, {'search': this.search}, this.method)
                     .then((item) => {
                         this.items = (item.data.map(e => {
-                                return ({'value': e['id'], 'text': e['description']});
+                                return ({'value': e[this.track_by], 'text': e[this.display]});
                             })
                         );
-                        /*   this.$emit('input', (item.data.map(e => {
-                                                        return ({'value': e['id'], 'text': e['description']});
-                                                    })
-                                                ));*/
-
                         this.loading = false
                     });
 
             }
-        },
+        }
     }
 
 </script>

@@ -26,4 +26,9 @@ class Patient extends Model
     {
         return $this->belongsTo('App\Models\Gender');
     }
+
+    public function getBy($search)
+    {
+        return self::select('id', 'name')->where("name", 'like', '%'. $search. '%')->get();
+    }
 }

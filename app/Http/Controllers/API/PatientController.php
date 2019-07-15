@@ -8,6 +8,22 @@ use App\Http\Controllers\Controller;
 
 class PatientController extends Controller
 {
+
+    const SUBJECT = 'Patient';
+
+    /**@var Patient $patient */
+    protected $patient;
+
+    /**
+     * PatientController constructor.
+     * @param Patient $patient
+     */
+    public function __construct(Patient $patient)
+    {
+        $this->patient = $patient;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -61,5 +77,10 @@ class PatientController extends Controller
     public function destroy(Patient $patient)
     {
         //
+    }
+
+    public function filterBy(Request $request)
+    {
+        return $this->patient->getby($request->input('search'));
     }
 }

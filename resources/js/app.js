@@ -10,10 +10,10 @@ import axios from "axios";
 window.Vue = require('vue');
 
 import Vuetify from 'vuetify';
+import VeeValidate, {Validator} from 'vee-validate';
 
 window.Vue.use(Vuetify);
-
-
+window.Vue.use(VeeValidate, {events: 'change|custom'});
 import App from './components/App'
 
 import {createRouter} from './routes'
@@ -38,6 +38,9 @@ Vue.component('App', require('./components/App.vue').default);
  */
 const router = createRouter();
 
+window.isNull= function($value) {
+    return ($value === undefined) || ($value === null) || ($value === "") || ($value === '') /*|| ($value === 'None')|| ($value === 'none')*/
+},
 
 window.async_call = function (url, data, method = 'get') {
     return axios({
@@ -51,6 +54,4 @@ const app = new Vue({
     el: '#app',
     components: {App},
     router,
-
 });
-window.app = app;

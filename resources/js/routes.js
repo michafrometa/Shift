@@ -5,6 +5,7 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 
 import Home from './components/Layout/Home';
+import ServiceOrder from './components/Views/ServiceOrder';
 
 window.Vue.use(VueRouter);
 
@@ -22,8 +23,14 @@ export function createRouter() {
                 {
                     path: '/home',
                     name: 'home',
-                    props: true,
-                    component: Home
+                    component: Home,
+                    children: [
+                        {
+                            path: '/service_order',
+                            name: 'service_order',
+                            component: ServiceOrder
+                        },
+                    ]
                 },
             ]
         }]

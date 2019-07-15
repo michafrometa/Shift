@@ -7,12 +7,27 @@
  */
 
 return [
+    'subjects'=>[
+        'service_order'=>'service order|service orders',
+        'patient'=>'patient|patients',
+        'doctor'=>'doctor|doctors',
+        'post_collection'=>'post collection|post collections',
+        'agreement'=>'agreement|agreements',
+        'exam'=>'exam|exams',
+        'sector'=>'sector|sectors',
+        'biologic_material'=>'biologic material|biologic materials',
+        'neighborhood'=>'neighborhood|neighborhoods',
+        'city'=>'city|cities',
+        'specialty'=>'specialty|specialties',
+        'gender'=>'gender|genders',
+        'federated_unit'=>'federated unit|federated units',
+    ],
     'response' => [
-        'ok' => ':subject :operation correctly',
-        'error' => 'Ha ocurrido un error, intentelo nuevamente o repórtelo.',
-        'no_found' => 'El elemento no  fue encontrado.',
-        'send_email' => 'Notificación enviada correctamente.',
-        'no_send_email' => 'La notificación no se envió por la siguiente razón: :reason'
+        'save' => 'item saved correctly.',
+        'update' => 'item updated correctly.',
+        'delete' => 'item deleted correctly.',
+        'error' => 'Error performing operation.',
+        'not_found' => ':subject not found.',
     ]
 
 ];

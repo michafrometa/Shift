@@ -12,7 +12,7 @@ class ServiceOrder extends Model
      */
     protected $table = 'shift_service_orders';
 
-    protected $fillable = ['agreement_id','post_collection_id','patient_id','doctor_id'];
+    protected $fillable = ['agreement_id','post_collection_id','patient_id','doctor_id','date'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

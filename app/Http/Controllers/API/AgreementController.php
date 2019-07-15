@@ -77,9 +77,9 @@ class AgreementController extends Controller
     {
         //
     }
-    public function getagreementsBy(Request $request)
+    public function filterBy(Request $request)
     {
-        return $this->agreement->select('id', 'description')->where("description", 'like', '%'. $request->input('search'). '%')->get();
+        return $this->agreement->getby($request->input('search'));
     }
 
 

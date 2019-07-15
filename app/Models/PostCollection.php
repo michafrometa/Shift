@@ -22,7 +22,10 @@ class PostCollection extends Model
         return $this->belongsTo('App\Models\Neighborhood');
     }
 
-
+    public function getBy($search)
+    {
+        return self::select('id', 'description')->where("description", 'like', '%'. $search. '%')->get();
+    }
 
 
 }

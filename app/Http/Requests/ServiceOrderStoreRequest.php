@@ -24,10 +24,10 @@ class ServiceOrderStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'agreement_id' => 'nullable|exists:agreements,id',
+       /*     'agreement_id' => 'nullable|exists:agreements,id',
             'post_collection_id' => 'nullable|exists:post_collections,id',
             'patient_id' => 'nullable|exists:patients,id',
-            'doctor_id' => 'nullable|exists:doctors,id',
+            'doctor_id' => 'nullable|exists:doctors,id',*/
         ];
     }
 }

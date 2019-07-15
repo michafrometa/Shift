@@ -68,13 +68,13 @@
 
 <script>
     export default {
-        name: "CRUD",
+        inject: ['$validator'],
+        name: "Crud",
         data: () => ({
             dialog: false,
-
             items: [],
             editedIndex: -1,
-
+            action: ''
         }),
         props: {
             url: {
@@ -101,7 +101,6 @@
                 return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
             }
         },
-
         watch: {
             dialog(val) {
                 val || this.close()
@@ -114,10 +113,14 @@
 
         methods: {
             initialize() {
-                async_call('api/'+ this.url)
+                async_call(this.url)
                     .then((item) => {
                         this.items = item.data
+                    })
+                    .catch((err) => {
+                        console.log(err.response.data)
                     });
+                ;
             },
 
             /*
@@ -134,15 +137,28 @@
             },
 
             editItem(item) {
+
                 this.editedIndex = this.items.indexOf(item)
+                this.editedIndex === -1 ? this.set_action("store") : this.set_action("update")
 
                 this.$emit("fill_form", Object.assign({}, item))
+
                 this.dialog = true
             },
 
             deleteItem(item) {
+                this.set_action("delete")
                 const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+                confirm('Are you sure you want to delete this item?') &&/* this.items.splice(index, 1)*/
+
+                async_call(this.url, {id:item.id}, 'delete')
+                    .then((item) => {
+                        /*todo notification message*/
+                        this.initialize()
+                        this.close()
+                    }).catch((err) => {
+                    console.log(err.response.data)
+                });
             },
 
             close() {
@@ -154,12 +170,34 @@
             },
 
             save() {
-                if (this.editedIndex > -1) {
-                    Object.assign(this.items[this.editedIndex], this.editedItem)
-                } else {
-                    this.items.push(this.editedItem)
-                }
-                this.close()
+                this.$validator.validate().then(result => {
+                    if (result) {
+                        if (this.editedIndex > -1) {
+                            async_call(this.url, this.editedItem, 'put')
+                                .then((item) => {
+                                    /*todo notification message*/
+                                    this.initialize()
+                                    this.close()
+                                }).catch((err) => {
+                                console.log(err.response.data)
+                            });
+                        } else {
+                            async_call(this.url, this.editedItem, 'post')
+                                .then((item) => {
+                                    /*todo notification message*/
+                                    this.initialize()
+                                    this.close()
+                                }).catch((err) => {
+                                console.log(err.response.data)
+                            });
+                        }
+                    } else
+                        this.$emit("form_errors", (result.response !== undefined) ? result.response.data.errors : result);
+                })
+            },
+            set_action(action) {
+                this.action = action
+                this.$emit('update:action', action)
             }
         }
     }

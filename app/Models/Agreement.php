@@ -21,4 +21,9 @@ class Agreement extends Model
     {
         return $this->hasOne('App\Models\ServiceOrder');
     }
+
+    public function getBy($search)
+    {
+        return self::select('id', 'description')->where("description", 'like', '%'. $search. '%')->get();
+    }
 }

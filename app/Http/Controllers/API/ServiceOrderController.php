@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\DB;
 
 class ServiceOrderController extends Controller
 {
-    const SUBJECT = 'Service order';
+    /*this is just me traing to learn how to use constants*/
+    const SUBJECT = 'service_order';
 
     /**@var ServiceOrder $service_order */
     protected $service_order;
@@ -58,26 +59,23 @@ class ServiceOrderController extends Controller
      */
     public function index()
     {
-      /*  return datatables()->of($this->service_order
+        /*  return datatables()->of($this->{$this::SUBJECT}
+              ->with(array(
+                  'agreement:id,description',
+                  'post_collection:id,description',
+                  'patient:id,name,birthdate,neighborhood_id,gender_id',
+                  'patient.gender:id,value',
+                  'patient.neighborhood:id,description',
+                  'doctor:id,specialty_id,name',
+                  'doctor.specialty:id,description'
+              )))->toJson();*/
+        return $this->service_order
             ->with(array(
                 'agreement:id,description',
                 'post_collection:id,description',
-                'patient:id,name,birthdate,neighborhood_id,gender_id',
-                'patient.gender:id,value',
-                'patient.neighborhood:id,description',
-                'doctor:id,specialty_id,name',
-                'doctor.specialty:id,description'
-            )))->toJson();*/
-      return $this->service_order
-            ->with(array(
-                'agreement:id,description',
-                'post_collection:id,description',
-                'patient:id,name,birthdate,neighborhood_id,gender_id',
-                'patient.gender:id,value',
-                'patient.neighborhood:id,description',
-                'doctor:id,specialty_id,name',
-                'doctor.specialty:id,description'
-            ))->get();
+                'patient:id,name',
+                'doctor:id,name'
+            ))->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -90,9 +88,10 @@ class ServiceOrderController extends Controller
     {
         try {
             return DB::transaction(function () use ($request) {
-                $service_order=$this->service_order->fill($request->all());
+
+                $service_order = $this->service_order->fill($request->all());
                 $service_order->save();
-                return response(__('messages.app.document.state', ['operation' => 'insertado']), Response::HTTP_CREATED);
+                return response(__('messages.response.save', ['subject' => trans_choice('messages.subjects.' . $this::SUBJECT,1)]), Response::HTTP_CREATED);
             });
         } catch (Exception $exception) {
             return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -107,9 +106,20 @@ class ServiceOrderController extends Controller
     public function show($service_order_id)
     {
         try {
-            return $this->service_order->findOrFail($service_order_id);
+            return $this->service_order
+                ->findOrFail($service_order_id)
+                ->with(array(
+                    'agreement:id,description',
+                    'post_collection:id,description',
+                    'patient:id,name,birthdate,neighborhood_id,gender_id',
+                    'patient.gender:id,value',
+                    'patient.neighborhood:id,description',
+                    'doctor:id,specialty_id,name',
+                    'doctor.specialty:id,description'
+                ))->orderBy('created_at', 'desc')->get();
+
         } catch (ModelNotFoundException $exception) {
-            return response(__('messages.response.no_found'), Response::HTTP_NOT_FOUND);
+            return response(__('messages.response.not_found', ['subject' => __('messages.subjects.' . $this::SUBJECT)]), Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -120,14 +130,13 @@ class ServiceOrderController extends Controller
      * @param  \App\Models\ServiceOrder $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceOrderUpdateRequest $request)
-    {
+    public function update(ServiceOrderUpdateRequest $request, $id)
+    {/*todo form requests validation*/
         try {
             return DB::transaction(function () use ($request) {
                 $service_order = $this->service_order->findOrFail($request->input('id'));
                 $service_order->update($request->all());
-                return response(__('messages.app.service_order.update'));
-
+                return response(__('messages.response.update'), ['subject' => __('messages.subjects.' . $this::SUBJECT)]);
             });
         } catch (ModelNotFoundException $exception) {
             report($exception);
@@ -135,14 +144,18 @@ class ServiceOrderController extends Controller
         }
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ServiceOrder $serviceOrder
-     * @return \Illuminate\Http\Response
+     * @param $ids
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function destroy(ServiceOrder $serviceOrder)
+    public function destroy($ids)
     {
-        //
+        $ids = explode(',', $ids);
+
+        $this->service_order::destroy($ids);
+
+        return response(trans_choice('messages.response.delete', count($ids)));
     }
+
 }
