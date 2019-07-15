@@ -2028,16 +2028,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   inject: ['$validator'],
@@ -2098,16 +2088,12 @@ __webpack_require__.r(__webpack_exports__);
 
       this.set_action("delete");
       var index = this.items.indexOf(item);
-      confirm('Are you sure you want to delete this item?') &&
-      /* this.items.splice(index, 1)*/
-      async_call(this.url, {
+      confirm('Are you sure you want to delete this item?') && async_call(this.url + '/' + item.id, {
         id: item.id
       }, 'delete').then(function (item) {
-        _this.notify(item.response.data);
+        _this.notify(item.data);
 
         _this.initialize();
-
-        _this.close();
       })["catch"](function (err) {
         _this.notify(err.response.data, 'error');
       });
@@ -2136,7 +2122,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$validator.validate().then(function (result) {
         if (result) {
           if (_this3.editedIndex > -1) {
-            async_call(_this3.url, _this3.editedItem, 'put').then(function (item) {
+            async_call(_this3.url + '/' + _this3.editedItem.id, _this3.editedItem, 'put').then(function (item) {
               _this3.notify(item.data);
 
               _this3.initialize();
@@ -2556,8 +2542,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -2595,7 +2579,6 @@ __webpack_require__.r(__webpack_exports__);
         sortable: false,
         no_td: true
       }],
-      item_indexes: ['agreement_id', 'post_collection_id', 'patient_id', 'doctor_id', 'doctor_id', 'date'],
       editedItem: {
         agreement_id: null,
         post_collection_id: null,
@@ -49402,35 +49385,12 @@ var render = function() {
       _vm._v(" "),
       _c("v-data-table", {
         staticClass: "elevation-1",
-        attrs: {
-          headers: _vm.headers,
-          items: _vm.items,
-          search: _vm.search,
-          "select-all": "",
-          "item-key": "id"
-        },
+        attrs: { headers: _vm.headers, items: _vm.items, search: _vm.search },
         scopedSlots: _vm._u([
           {
             key: "items",
             fn: function(props) {
               return [
-                _c(
-                  "td",
-                  [
-                    _c("v-checkbox", {
-                      attrs: { primary: "", "hide-details": "" },
-                      model: {
-                        value: props.selected,
-                        callback: function($$v) {
-                          _vm.$set(props, "selected", $$v)
-                        },
-                        expression: "props.selected"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
                 _vm._l(_vm.headers, function(header) {
                   return !header.no_td
                     ? _c("td", [
@@ -49727,7 +49687,6 @@ var render = function() {
       headers: _vm.headers,
       editedItem: _vm.editedItem,
       defaultItem: _vm.defaultItem,
-      item_indexes: _vm.item_indexes,
       view_name: _vm.view_name,
       action: _vm.crud_action
     },

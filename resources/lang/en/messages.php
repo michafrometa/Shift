@@ -23,11 +23,16 @@ return [
         'federated_unit'=>'federated unit|federated units',
     ],
     'response' => [
-        'save' => 'item saved correctly.',
-        'update' => 'item updated correctly.',
-        'delete' => 'item deleted correctly.',
+        'save' => 'Element saved correctly.',
+        'update' => 'Element updated correctly.',
+        'delete' => 'Element deleted correctly.| Elements deleted correctly.',
         'error' => 'Error performing operation.',
         'not_found' => ':subject not found.',
+    ],
+    'logs'=>[
+        'save' => 'row from shift_:subject with id = :id saved correctly.',
+        'update' => 'row from shift_:subject with id = :id updated correctly.',
+        'delete' => 'row from shift_:subject with id = :id deleted correctly.'
     ]
 
 ];

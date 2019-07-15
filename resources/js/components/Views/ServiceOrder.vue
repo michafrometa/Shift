@@ -4,7 +4,6 @@
             :headers="headers"
             :editedItem="editedItem"
             :defaultItem="defaultItem"
-            :item_indexes="item_indexes"
             :view_name="view_name"
             @fill_form="fill_form"
             @form_errors="form_errors"
@@ -15,7 +14,8 @@
 
                 <custom-select
                         url="api/agreementsBy"
-                        v-validate="'required'"                        v-model="agreement"
+                        v-validate="'required'"
+                        v-model="agreement"
                         label="Agreement"
                         display="description"
                         name="agreement"
@@ -24,7 +24,6 @@
                 <span class="text-danger">{{ errors.first('agreement') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
-
                 <custom-select
                         url="api/postcollectionsBy"
                         v-validate="'required'"
@@ -37,7 +36,6 @@
                 <span class="text-danger">{{ errors.first('post_collection') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
-
                 <custom-select
                         url="api/patientsBy"
                         v-validate="'required'"
@@ -63,8 +61,8 @@
                 <span class="text-danger">{{ errors.first('doctor') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
-                <!--todo selected date has to be today on new item
-                todo available dates should be from today on-->
+                <!--todo default selected date has to be TODAY
+                todo passed dates should be disabled-->
                 <custom-datepicker
                         v-validate="'required'"
                         v-model="editedItem.date"
@@ -107,7 +105,7 @@
                     {text: 'Date', value: 'date'},
                     {text: 'Actions', value: 'name', sortable: false, no_td: true}
                 ],
-                item_indexes: ['agreement_id', 'post_collection_id', 'patient_id', 'doctor_id', 'doctor_id', 'date'],
+
                 editedItem: {
                     agreement_id: null,
                     post_collection_id: null,

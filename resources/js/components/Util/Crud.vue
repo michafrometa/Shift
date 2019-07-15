@@ -49,19 +49,9 @@
                 :headers="headers"
                 :items="items"
                 :search="search"
-                select-all
-                item-key="id"
                 class="elevation-1"
         >
             <template v-slot:items="props">
-                <td>
-                    <v-checkbox
-                            v-model="props.selected"
-                            primary
-                            hide-details
-                    ></v-checkbox>
-                </td>
-
                 <td v-for="header in headers" v-if="!header.no_td">{{string_to_array(header.value,props.item)}}</td>
 
                 <td class="justify-center layout px-0">
@@ -146,13 +136,12 @@
             deleteItem(item) {
                 this.set_action("delete")
                 const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && /* this.items.splice(index, 1)*/
+                confirm('Are you sure you want to delete this item?') &&
 
-                async_call(this.url, {id: item.id}, 'delete')
+                async_call(this.url+'/'+ item.id, {id: item.id}, 'delete')
                     .then((item) => {
-                        this.notify(item.response.data)
+                        this.notify(item.data)
                         this.initialize()
-                        this.close()
                     }).catch((err) => {
                     this.notify(err.response.data, 'error')
                 });
@@ -176,7 +165,7 @@
                 this.$validator.validate().then(result => {
                     if (result) {
                         if (this.editedIndex > -1) {
-                            async_call(this.url, this.editedItem, 'put')
+                            async_call(this.url+'/'+this.editedItem.id, this.editedItem, 'put')
                                 .then((item) => {
 
                                     this.notify(item.data)
