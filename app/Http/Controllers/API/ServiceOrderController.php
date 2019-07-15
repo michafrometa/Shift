@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ServiceOrderController extends Controller
 {
@@ -91,9 +92,10 @@ class ServiceOrderController extends Controller
 
                 $service_order = $this->service_order->fill($request->all());
                 $service_order->save();
-                return response(__('messages.response.save', ['subject' => trans_choice('messages.subjects.' . $this::SUBJECT,1)]), Response::HTTP_CREATED);
+                return response(__('messages.response.save', ['subject' => trans_choice('messages.subjects.' . $this::SUBJECT, 1)]), Response::HTTP_CREATED);
             });
         } catch (Exception $exception) {
+            Log::error($exception->getMessage());
             return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -120,6 +122,9 @@ class ServiceOrderController extends Controller
 
         } catch (ModelNotFoundException $exception) {
             return response(__('messages.response.not_found', ['subject' => __('messages.subjects.' . $this::SUBJECT)]), Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -130,7 +135,8 @@ class ServiceOrderController extends Controller
      * @param  \App\Models\ServiceOrder $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceOrderUpdateRequest $request, $id){
+    public function update(ServiceOrderUpdateRequest $request, $id)
+    {
         try {
             return DB::transaction(function () use ($request) {
                 $service_order = $this->service_order->findOrFail($request->input('id'));
@@ -138,8 +144,10 @@ class ServiceOrderController extends Controller
                 return response(__('messages.response.update'), ['subject' => __('messages.subjects.' . $this::SUBJECT)]);
             });
         } catch (ModelNotFoundException $exception) {
-            report($exception);
             return response(__('messages.response.no_found'), Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -150,11 +158,14 @@ class ServiceOrderController extends Controller
      */
     public function destroy($ids)
     {
-        $ids = explode(',', $ids);
+        try {
+            $ids = explode(',', $ids);
+            $this->service_order::destroy($ids);
+            return response(trans_choice('messages.response.delete', count($ids)));
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-        $this->service_order::destroy($ids);
-
-        return response(trans_choice('messages.response.delete', count($ids)));
     }
-
 }

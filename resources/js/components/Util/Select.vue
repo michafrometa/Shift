@@ -31,11 +31,17 @@
             }
         },
         props: {
-            value: [Array, String, Number, Object],
+            /*v-model*/
+            value:
+                [
+                    Array, String, Number, Object
+                ],
+            /*placeholder and label */
             label: {
                 type: String,
                 required: true
             },
+            /* type of vuetify select input*/
             type: {
                 type: String,
                 default: 'autocomplete',
@@ -43,16 +49,20 @@
                     return ['autocomplete', 'select'].indexOf(value) !== -1
                 }
             },
+            /*post,get,delete,put,patch,etc*/
             method: {
                 type: String,
                 default: 'post'
             },
+            /*data source -tested with api-*/
             url: {
                 type: String
             },
+            /*the request data column which value will be shown on the select*/
             display: {
                 type: String
             },
+            /*the indicator field */
             track_by: {
                 type: String,
                 default:
@@ -77,11 +87,11 @@
                     } else if (typeof val === 'object') {
                         this.items = [{'value': val[this.track_by], 'text': val[this.display]}]
                         this.model = val[this.track_by]
-                    }else if (val ==='None'){
+                    } else if (val === 'None') {
                         this.model = null
                         this.items = []
                     }
-                    else{
+                    else {
                         console.log('Another posibility :' + val)
                     }
                 }

@@ -1,5 +1,9 @@
 <template>
     <div>
+        <custom-snackbar
+                v-model="snackbar"
+        >
+        </custom-snackbar>
         <v-toolbar flat color="white">
             <v-toolbar-title>{{view_name}}</v-toolbar-title>
             <v-divider
@@ -49,8 +53,6 @@
                 item-key="id"
                 class="elevation-1"
         >
-            <!--
-                item-key="name"-->
             <template v-slot:items="props">
                 <td>
                     <v-checkbox
@@ -87,16 +89,33 @@
 </template>
 
 <script>
+    import CustomSnackbar from './Snackbar'
+
     export default {
         inject: ['$validator'],
         name: "Crud",
+        components: {
+            CustomSnackbar
+        },
         data: () => ({
-            search:'',
+            snackbar:{
+                text: '',
+                color: 'success'
+            },
+            search: '',
             dialog: false,
-            items: [],
             editedIndex: -1,
-            action: ''
+            action: '',
+            items: []
         }),
+        computed: {
+            formTitle() {
+                return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+            }
+        },
+        created() {
+            this.initialize()
+        },
         props: {
             url: {
                 type: String
@@ -117,68 +136,25 @@
                 required: true
             }
         },
-        computed: {
-            formTitle() {
-                return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-            }
-        },
-        watch: {
-            dialog(val) {
-                val || this.close()
-            }
-        },
-
-        created() {
-            this.initialize()
-        },
-
         methods: {
-            initialize() {
-                async_call(this.url)
-                    .then((item) => {
-                        this.items = item.data
-                    })
-                    .catch((err) => {
-                        console.log(err.response.data)
-                    });
-                ;
-            },
-
-            /*
-            Solving issue handling nested object referencing by string
-            https://stackoverflow.com/a/23149700/10326123*/
-
-            string_to_array(pathString, jsonObj) {
-                var pathArray = pathString.split(".");
-                var grandchild = jsonObj;
-                $.each(pathArray, function (i, item) {
-                    grandchild = grandchild[item];
-                });
-                return grandchild;
-            },
-
             editItem(item) {
-
                 this.editedIndex = this.items.indexOf(item)
                 this.editedIndex === -1 ? this.set_action("store") : this.set_action("update")
-
                 this.$emit("fill_form", Object.assign({}, item))
-
                 this.dialog = true
             },
-
             deleteItem(item) {
                 this.set_action("delete")
                 const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') &&/* this.items.splice(index, 1)*/
+                confirm('Are you sure you want to delete this item?') && /* this.items.splice(index, 1)*/
 
-                async_call(this.url, {id:item.id}, 'delete')
+                async_call(this.url, {id: item.id}, 'delete')
                     .then((item) => {
-                        /*todo notification message*/
+                        this.notify(item.response.data)
                         this.initialize()
                         this.close()
                     }).catch((err) => {
-                    console.log(err.response.data)
+                    this.notify(err.response.data, 'error')
                 });
             },
 
@@ -190,27 +166,33 @@
                     this.editedIndex = -1
                 }, 300)
             },
-
+            notify(text, color = 'success') {
+                this.snackbar={
+                    text:text,
+                    color:color
+                }
+            },
             save() {
                 this.$validator.validate().then(result => {
                     if (result) {
                         if (this.editedIndex > -1) {
                             async_call(this.url, this.editedItem, 'put')
                                 .then((item) => {
-                                    /*todo notification message*/
+
+                                    this.notify(item.data)
                                     this.initialize()
                                     this.close()
                                 }).catch((err) => {
-                                console.log(err.response.data)
+                                this.notify(err.response.data, 'error')
                             });
                         } else {
                             async_call(this.url, this.editedItem, 'post')
                                 .then((item) => {
-                                    /*todo notification message*/
+                                    this.notify(item.data)
                                     this.initialize()
                                     this.close()
                                 }).catch((err) => {
-                                console.log(err.response.data)
+                                this.notify(err.response.data, 'error')
                             });
                         }
                     } else
@@ -220,6 +202,27 @@
             set_action(action) {
                 this.action = action
                 this.$emit('update:action', action)
+            },
+            /*
+          Solving issue handling nested object referencing by string
+          https://stackoverflow.com/a/23149700/10326123*/
+
+            string_to_array(pathString, jsonObj) {
+                var pathArray = pathString.split(".");
+                var grandchild = jsonObj;
+                $.each(pathArray, function (i, item) {
+                    grandchild = grandchild[item];
+                });
+                return grandchild;
+            },
+            initialize() {
+                async_call(this.url)
+                    .then((item) => {
+                        this.items = item.data
+                    })
+                    .catch((err) => {
+                        this.notify(err.response.data, 'error')
+                    });
             }
         }
     }
