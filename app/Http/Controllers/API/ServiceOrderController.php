@@ -65,7 +65,7 @@ class ServiceOrderController extends Controller
         try {
             return $this->service_order
                 ->with(array(
-                    'agreement:id,description',
+                    'agreement:id,name',
                     'post_collection:id,description',
                     'patient:id,name',
                     'doctor:id,name'

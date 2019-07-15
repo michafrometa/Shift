@@ -16,6 +16,7 @@ class CreateSpecialtiesTable extends Migration
         Schema::create('shift_specialties', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->string('name');
             $table->longText('description')->nullable();
         });
     }

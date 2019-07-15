@@ -2027,6 +2027,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   inject: ['$validator'],
@@ -2561,7 +2562,7 @@ __webpack_require__.r(__webpack_exports__);
       headers: [{
         text: 'Agreement',
         align: 'left',
-        value: 'agreement.description'
+        value: 'agreement.name'
       }, {
         text: 'Post Collection',
         value: 'post_collection.description'
@@ -49450,7 +49451,7 @@ var render = function() {
                     attrs: { color: "primary" },
                     on: { click: _vm.initialize }
                   },
-                  [_vm._v("Reset")]
+                  [_vm._v(_vm._s(_vm.$t("messages.reset")))]
                 )
               ]
             },
@@ -49721,7 +49722,7 @@ var render = function() {
                   attrs: {
                     url: "api/agreementsBy",
                     label: "Agreement",
-                    display: "description",
+                    display: "name",
                     name: "agreement"
                   },
                   model: {
@@ -92597,6 +92598,7 @@ __webpack_require__.r(__webpack_exports__);
       "new_item": "new item",
       "edit_item": "edit item",
       "sure_to_delete": "Are you sure you want to delete this item?",
+      "reset": "reset",
       "response": {
         "save": "Element saved correctly.",
         "update": "Element updated correctly.",
@@ -92785,6 +92787,7 @@ __webpack_require__.r(__webpack_exports__);
       "new_item": "nuevo elemento",
       "edit_item": "editar elemento",
       "sure_to_delete": "Está seguro que desea eliminar este elemento?",
+      "reset": "recargar",
       "response": {
         "save": "elemento guardado correctamente.",
         "update": "elemento actualizado correctamente.",

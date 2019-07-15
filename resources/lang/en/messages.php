@@ -24,6 +24,7 @@ return [
     'new_item'=>'new item',
     'edit_item'=>'edit item',
     'sure_to_delete'=>'Are you sure you want to delete this item?',
+    'reset'=>'reset',
     'response' => [
         'save' => 'Element saved correctly.',
         'update' => 'Element updated correctly.',

@@ -4,6 +4,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Agreement::class, function (Faker $faker) {
     return [
-        'description' => $faker->company
+        'name' => $faker->company
     ];
 });

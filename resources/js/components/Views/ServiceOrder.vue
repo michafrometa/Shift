@@ -16,7 +16,7 @@
                         v-validate="'required'"
                         v-model="agreement"
                         label="Agreement"
-                        display="description"
+                        display="name"
                         name="agreement"
                 >
                 </custom-select>
@@ -92,11 +92,7 @@
                 view_name: "service_order",
                 crud_action: '',
                 headers: [
-                    {
-                        text: 'Agreement',
-                        align: 'left',
-                        value: 'agreement.description'
-                    },
+                    {text: 'Agreement', align: 'left', value: 'agreement.name'},
                     {text: 'Post Collection', value: 'post_collection.description'},
                     {text: 'Patient', value: 'patient.name'},
                     {text: 'Doctor', value: 'doctor.name'},

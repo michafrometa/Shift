@@ -16,7 +16,10 @@ class CreateNeighborhoodsTable extends Migration
         Schema::create('shift_neighborhoods', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->string('name');
             $table->longText('description')->nullable();
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('shift_cities');
         });
     }
 

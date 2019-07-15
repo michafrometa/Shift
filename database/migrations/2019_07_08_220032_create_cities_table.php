@@ -16,10 +16,11 @@ class CreateCitiesTable extends Migration
         Schema::create('shift_cities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->string('name');
             $table->longText('description')->nullable();
             $table->string('federated_unit');
-            $table->unsignedBigInteger('neighborhood_id');
-            $table->foreign('neighborhood_id')->references('id')->on('shift_neighborhoods');
+          /*  $table->unsignedBigInteger('neighborhood_id');
+            $table->foreign('neighborhood_id')->references('id')->on('shift_neighborhoods');*/
         });
     }
 

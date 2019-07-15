@@ -16,8 +16,7 @@ class CreateAgreementsTable extends Migration
         Schema::create('shift_agreements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->longText('description')->nullable();
-            /*todo examprice 1 to 1 , serviceorder 1 to 1*/
+            $table->string('name');
         });
     }
 

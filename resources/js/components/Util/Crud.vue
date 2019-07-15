@@ -71,7 +71,8 @@
                 </td>
             </template>
             <template v-slot:no-data>
-                <v-btn color="primary" @click="initialize">Reset</v-btn>
+                <v-btn color="primary" @click="initialize">{{$t('messages.reset')}}</v-btn>
+
             </template>
         </v-data-table>
     </div>

@@ -24,6 +24,7 @@ return [
     'new_item'=>'nuevo elemento',
     'edit_item'=>'editar elemento',
     'sure_to_delete'=>'Está seguro que desea eliminar este elemento?',
+    'reset'=>'recargar',
     'response' => [
         'save' => 'elemento guardado correctamente.',
         'update' => 'elemento actualizado correctamente.',

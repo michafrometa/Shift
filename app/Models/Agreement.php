@@ -24,6 +24,6 @@ class Agreement extends Model
 
     public function getBy($search)
     {
-        return self::select('id', 'description')->where("description", 'like', '%'. $search. '%')->get();
+        return self::select('id', 'name')->where("name", 'like', '%'. $search. '%')->get();
     }
 }
