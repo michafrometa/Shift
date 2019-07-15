@@ -13,26 +13,15 @@
         <template v-slot:form_content="{ crud }">
             <v-flex xs12 sm6 md4>
 
-                <!--<custom-select
-                        url="api/agreementsBy"
-                        v-validate="'required'"
-                        v-model="agreement"
-                        label="Agreement"
-                        display="description"
-                        name="agreement"
-                >
-                </custom-select>
-                <span>{{ errors.first('agreement') }}</span>-->
                 <custom-select
                         url="api/agreementsBy"
-                        v-model="agreement"
+                        v-validate="'required'"                        v-model="agreement"
                         label="Agreement"
                         display="description"
                         name="agreement"
                 >
                 </custom-select>
-                <span>{{ errors.first('agreement') }}</span>
-
+                <span class="text-danger">{{ errors.first('agreement') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
 
@@ -45,7 +34,7 @@
                         name="post_collection"
                 >
                 </custom-select>
-                <span>{{ errors.first('post_collection') }}</span>
+                <span class="text-danger">{{ errors.first('post_collection') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
 
@@ -59,7 +48,7 @@
 
                 >
                 </custom-select>
-                <span>{{ errors.first('patient') }}</span>
+                <span class="text-danger">{{ errors.first('patient') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
                 <custom-select
@@ -71,7 +60,7 @@
                         name="doctor"
                 >
                 </custom-select>
-                <span>{{ errors.first('doctor') }}</span>
+                <span class="text-danger">{{ errors.first('doctor') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
                 <!--todo selected date has to be today on new item
@@ -82,7 +71,7 @@
                         label="Date"
                         name="date"
                 ></custom-datepicker>
-                <span>{{ errors.first('date') }}</span>
+                <span class="text-danger">{{ errors.first('date') }}</span>
 
             </v-flex>
         </template>

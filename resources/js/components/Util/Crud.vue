@@ -45,9 +45,20 @@
                 :headers="headers"
                 :items="items"
                 :search="search"
+                select-all
+                item-key="id"
                 class="elevation-1"
         >
+            <!--
+                item-key="name"-->
             <template v-slot:items="props">
+                <td>
+                    <v-checkbox
+                            v-model="props.selected"
+                            primary
+                            hide-details
+                    ></v-checkbox>
+                </td>
 
                 <td v-for="header in headers" v-if="!header.no_td">{{string_to_array(header.value,props.item)}}</td>
 

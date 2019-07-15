@@ -19,7 +19,7 @@ return [
         'neighborhood'=>'vecindario|vecindarios',
         'city'=>'ciudad|ciudades',
         'specialty'=>'especialidad|especialidades',
-        'gender'=>'géneror|géneros',
+        'gender'=>'género|géneros',
         'federated_unit'=>'unidad federativa|unidades federativas',
     ],
     'response' => [

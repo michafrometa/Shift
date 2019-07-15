@@ -2033,6 +2033,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   inject: ['$validator'],
   name: "Crud",
@@ -2372,17 +2383,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Util_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Util/Select */ "./resources/js/components/Util/Select.vue");
 /* harmony import */ var _Util_Datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Util/Datepicker */ "./resources/js/components/Util/Datepicker.vue");
 /* harmony import */ var _Util_Crud__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Util/Crud */ "./resources/js/components/Util/Crud.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -49297,12 +49297,35 @@ var render = function() {
       _vm._v(" "),
       _c("v-data-table", {
         staticClass: "elevation-1",
-        attrs: { headers: _vm.headers, items: _vm.items, search: _vm.search },
+        attrs: {
+          headers: _vm.headers,
+          items: _vm.items,
+          search: _vm.search,
+          "select-all": "",
+          "item-key": "id"
+        },
         scopedSlots: _vm._u([
           {
             key: "items",
             fn: function(props) {
               return [
+                _c(
+                  "td",
+                  [
+                    _c("v-checkbox", {
+                      attrs: { primary: "", "hide-details": "" },
+                      model: {
+                        value: props.selected,
+                        callback: function($$v) {
+                          _vm.$set(props, "selected", $$v)
+                        },
+                        expression: "props.selected"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
                 _vm._l(_vm.headers, function(header) {
                   return !header.no_td
                     ? _c("td", [
@@ -49560,6 +49583,14 @@ var render = function() {
               { attrs: { xs12: "", sm6: "", md4: "" } },
               [
                 _c("custom-select", {
+                  directives: [
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
+                    }
+                  ],
                   attrs: {
                     url: "api/agreementsBy",
                     label: "Agreement",
@@ -49575,7 +49606,9 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.errors.first("agreement")))])
+                _c("span", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errors.first("agreement")))
+                ])
               ],
               1
             ),
@@ -49608,7 +49641,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("span", [
+                _c("span", { staticClass: "text-danger" }, [
                   _vm._v(_vm._s(_vm.errors.first("post_collection")))
                 ])
               ],
@@ -49643,7 +49676,9 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.errors.first("patient")))])
+                _c("span", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errors.first("patient")))
+                ])
               ],
               1
             ),
@@ -49676,7 +49711,9 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.errors.first("doctor")))])
+                _c("span", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errors.first("doctor")))
+                ])
               ],
               1
             ),
@@ -49704,7 +49741,9 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.errors.first("date")))])
+                _c("span", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errors.first("date")))
+                ])
               ],
               1
             )
@@ -90532,28 +90571,32 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _locale_es__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./locale/es */ "./resources/js/locale/es.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 
-window.Vue.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a);
-window.Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_2__["default"], {
+window.Vue.use(vuetify__WEBPACK_IMPORTED_MODULE_2___default.a);
+window.Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_3__["default"], {
   events: 'change|custom'
 });
+vee_validate__WEBPACK_IMPORTED_MODULE_3__["Validator"].localize('es', _locale_es__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 /**
@@ -90573,13 +90616,13 @@ Vue.component('App', __webpack_require__(/*! ./components/App.vue */ "./resource
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var router = Object(_routes__WEBPACK_IMPORTED_MODULE_4__["createRouter"])();
+var router = Object(_routes__WEBPACK_IMPORTED_MODULE_5__["createRouter"])();
 window.isNull = function ($value) {
   return $value === undefined || $value === null || $value === "" || $value === '';
   /*|| ($value === 'None')|| ($value === 'none')*/
 }, window.async_call = function (url, data) {
   var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'get';
-  return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+  return axios__WEBPACK_IMPORTED_MODULE_1___default()({
     url: url,
     data: data,
     method: method
@@ -90588,9 +90631,12 @@ window.isNull = function ($value) {
 var app = new Vue({
   el: '#app',
   components: {
-    App: _components_App__WEBPACK_IMPORTED_MODULE_3__["default"]
+    App: _components_App__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  router: router
+  router: router,
+  mounted: function mounted() {
+    this.$validator.localize('es', _locale_es__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  }
 });
 
 /***/ }),
@@ -91064,6 +91110,253 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceOrder_vue_vue_type_template_id_6da98465_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/locale/es.js":
+/*!***********************************!*\
+  !*** ./resources/js/locale/es.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+var messages = {
+  _default: function _default(field) {
+    return "El campo ".concat(field, " no es v\xE1lido.");
+  },
+  after: function after(field, _ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        target = _ref2[0],
+        inclusion = _ref2[1];
+
+    return "El campo ".concat(field, " debe ser posterior ").concat(inclusion ? 'o igual ' : '', "a ").concat(target, ".");
+  },
+  alpha: function alpha(field) {
+    return "El campo ".concat(field, " solo debe contener letras.");
+  },
+  alpha_dash: function alpha_dash(field) {
+    return "El campo ".concat(field, " solo debe contener letras, n\xFAmeros y guiones.");
+  },
+  alpha_num: function alpha_num(field) {
+    return "El campo ".concat(field, " solo debe contener letras y n\xFAmeros.");
+  },
+  alpha_spaces: function alpha_spaces(field) {
+    return "El campo ".concat(field, " solo debe contener letras y espacios.");
+  },
+  before: function before(field, _ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+        target = _ref4[0],
+        inclusion = _ref4[1];
+
+    return "El campo ".concat(field, " debe ser anterior ").concat(inclusion ? 'o igual ' : '', "a ").concat(target, ".");
+  },
+  between: function between(field, _ref5) {
+    var _ref6 = _slicedToArray(_ref5, 2),
+        min = _ref6[0],
+        max = _ref6[1];
+
+    return "El campo ".concat(field, " debe estar entre ").concat(min, " y ").concat(max, ".");
+  },
+  confirmed: function confirmed(field) {
+    return "El campo ".concat(field, " no coincide.");
+  },
+  credit_card: function credit_card(field) {
+    return "El campo ".concat(field, " es inv\xE1lido.");
+  },
+  date_between: function date_between(field, _ref7) {
+    var _ref8 = _slicedToArray(_ref7, 2),
+        min = _ref8[0],
+        max = _ref8[1];
+
+    return "El campo ".concat(field, " debe estar entre ").concat(min, " y ").concat(max, ".");
+  },
+  date_format: function date_format(field, _ref9) {
+    var _ref10 = _slicedToArray(_ref9, 1),
+        format = _ref10[0];
+
+    return "El campo ".concat(field, " debe tener formato formato ").concat(format, ".");
+  },
+  decimal: function decimal(field) {
+    var _ref11 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [],
+        _ref12 = _slicedToArray(_ref11, 1),
+        _ref12$ = _ref12[0],
+        decimals = _ref12$ === void 0 ? '*' : _ref12$;
+
+    return "El campo ".concat(field, " debe ser num\xE9rico y contener ").concat(decimals === '*' ? '' : decimals, " puntos decimales.");
+  },
+  digits: function digits(field, _ref13) {
+    var _ref14 = _slicedToArray(_ref13, 1),
+        length = _ref14[0];
+
+    return "El campo ".concat(field, " debe ser num\xE9rico y contener exactamente ").concat(length, " d\xEDgitos.");
+  },
+  dimensions: function dimensions(field, _ref15) {
+    var _ref16 = _slicedToArray(_ref15, 2),
+        width = _ref16[0],
+        height = _ref16[1];
+
+    return "El campo ".concat(field, " debe ser de ").concat(width, " p\xEDxeles por ").concat(height, " p\xEDxeles.");
+  },
+  email: function email(field) {
+    return "El campo ".concat(field, " debe ser un correo electr\xF3nico v\xE1lido.");
+  },
+  excluded: function excluded(field) {
+    return "El campo ".concat(field, " debe ser un valor v\xE1lido.");
+  },
+  ext: function ext(field) {
+    return "El campo ".concat(field, " debe ser un archivo v\xE1lido.");
+  },
+  image: function image(field) {
+    return "El campo ".concat(field, " debe ser una imagen.");
+  },
+  included: function included(field) {
+    return "El campo ".concat(field, " debe ser un valor v\xE1lido.");
+  },
+  integer: function integer(field) {
+    return "El campo ".concat(field, " debe ser un entero.");
+  },
+  ip: function ip(field) {
+    return "El campo ".concat(field, " debe ser una direcci\xF3n ip v\xE1lida.");
+  },
+  length: function length(field, _ref17) {
+    var _ref18 = _slicedToArray(_ref17, 2),
+        _length = _ref18[0],
+        max = _ref18[1];
+
+    if (max) {
+      return "El largo del campo ".concat(field, " debe estar entre ").concat(_length, " y ").concat(max, ".");
+    }
+
+    return "El largo del campo ".concat(field, " debe ser ").concat(_length, ".");
+  },
+  max: function max(field, _ref19) {
+    var _ref20 = _slicedToArray(_ref19, 1),
+        length = _ref20[0];
+
+    return "El campo ".concat(field, " no debe ser mayor a ").concat(length, " caracteres.");
+  },
+  max_value: function max_value(field, _ref21) {
+    var _ref22 = _slicedToArray(_ref21, 1),
+        max = _ref22[0];
+
+    return "El campo ".concat(field, " debe de ser ").concat(max, " o menor.");
+  },
+  mimes: function mimes(field) {
+    return "El campo ".concat(field, " debe ser un tipo de archivo v\xE1lido.");
+  },
+  min: function min(field, _ref23) {
+    var _ref24 = _slicedToArray(_ref23, 1),
+        length = _ref24[0];
+
+    return "El campo ".concat(field, " debe tener al menos ").concat(length, " caracteres.");
+  },
+  min_value: function min_value(field, _ref25) {
+    var _ref26 = _slicedToArray(_ref25, 1),
+        min = _ref26[0];
+
+    return "El campo ".concat(field, " debe ser ").concat(min, " o superior.");
+  },
+  numeric: function numeric(field) {
+    return "El campo ".concat(field, " debe contener solo caracteres num\xE9ricos.");
+  },
+  regex: function regex(field) {
+    return "El formato del campo ".concat(field, " no es v\xE1lido.");
+  },
+  required: function required(field) {
+    return "El campo ".concat(field, " es obligatorio.");
+  },
+  size: function size(field, _ref27) {
+    var _ref28 = _slicedToArray(_ref27, 1),
+        _size = _ref28[0];
+
+    return "El campo ".concat(field, " debe ser menor a.");
+  },
+  url: function url(field) {
+    return "El campo ".concat(field, " no es una URL v\xE1lida.");
+  }
+};
+var locale = {
+  name: 'es',
+  messages: messages,
+  attributes: {
+    name: 'nombre',
+    username: 'usuario',
+    email: 'correo electrónico',
+    first_name: 'nombre',
+    last_name: 'apellido',
+    password: 'contraseña',
+    password_confirmation: 'confirmación de la contraseña',
+    city: 'ciudad',
+    country: 'país',
+    address: 'dirección',
+    phone: 'teléfono',
+    mobile: 'móvil',
+    age: 'edad',
+    sex: 'sexo',
+    gender: 'género',
+    year: 'año',
+    month: 'mes',
+    day: 'día',
+    days: 'días',
+    hour: 'hora',
+    minute: 'minuto',
+    second: 'segundo',
+    title: 'título',
+    content: 'contenido',
+    body: 'contenido',
+    description: 'descripción',
+    excerpt: 'extracto',
+    date: 'fecha',
+    time: 'hora',
+    subject: 'asunto',
+    message: 'mensaje',
+    shortname: 'abreviatura',
+    ministry_id: 'organismo',
+    entity_id: 'entidad',
+    code: 'código',
+    gender_id: 'género',
+    country_id: 'país',
+    area_id: 'area',
+    responsability_id: 'cargo',
+    fullname: 'nombre completo',
+    phones: 'teléfono',
+    person_id: 'persona',
+    ministry_value: 'organismo',
+    entity_value: 'entidad',
+    passwordNewConfirmation: 'confirmación de contraseña',
+    passwordNew: 'contraseña',
+    passwordNewConfirmation2: 'confirmación de contraseña',
+    role_id: 'rol',
+    passwordActual: 'contraseña actual',
+    receiver_id: 'destinatario',
+    documentclassification_id: 'clasificación',
+    service_order: 'orden de servicio',
+    patient: 'paciente',
+    doctor: 'doctor',
+    post_collection: 'captura posterior',
+    agreement: 'acuerdo',
+    exam: 'examen',
+    sector: 'sector',
+    biologic_material: 'material biológico',
+    neighborhood: 'vecindario',
+    specialty: 'especialidad',
+    federated_unit: 'unidad federativa'
+  }
+};
+vee_validate__WEBPACK_IMPORTED_MODULE_0__["default"].Validator.localize('es', locale);
+/* harmony default export */ __webpack_exports__["default"] = (locale);
 
 /***/ }),
 

@@ -1,3 +1,5 @@
+import es from "./locale/es";
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -14,6 +16,7 @@ import VeeValidate, {Validator} from 'vee-validate';
 
 window.Vue.use(Vuetify);
 window.Vue.use(VeeValidate, {events: 'change|custom'});
+Validator.localize('es', es);
 import App from './components/App'
 
 import {createRouter} from './routes'
@@ -54,4 +57,7 @@ const app = new Vue({
     el: '#app',
     components: {App},
     router,
+    mounted() {
+        this.$validator.localize('es', es);
+    },
 });
