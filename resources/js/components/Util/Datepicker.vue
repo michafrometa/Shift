@@ -51,7 +51,6 @@
             }
             ,
             value(val) {
-
                 this.date = val ? val : new Date().toISOString().substr(0, 10)
             }
         }

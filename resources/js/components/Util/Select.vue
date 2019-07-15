@@ -61,7 +61,7 @@
         },
         watch: {
             search(val) {
-                /*fixme should not api search when model is already selected item*/
+                /*fixme should not api search when model is the already selected item*/
                 val && this.querySelections(val)
             },
             model(val) {

@@ -130,8 +130,7 @@ class ServiceOrderController extends Controller
      * @param  \App\Models\ServiceOrder $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceOrderUpdateRequest $request, $id)
-    {/*todo form requests validation*/
+    public function update(ServiceOrderUpdateRequest $request, $id){
         try {
             return DB::transaction(function () use ($request) {
                 $service_order = $this->service_order->findOrFail($request->input('id'));

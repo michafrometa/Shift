@@ -2024,11 +2024,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   inject: ['$validator'],
   name: "Crud",
   data: function data() {
     return {
+      search: '',
       dialog: false,
       items: [],
       editedIndex: -1,
@@ -2119,6 +2129,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.dialog = false;
+      this.$validator.errors.clear();
       setTimeout(function () {
         _this3.$emit("fill_form", Object.assign({}, _this3.defaultItem));
 
@@ -2299,7 +2310,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   },
   watch: {
     search: function search(val) {
-      /*fixme should not api search when model is already selected item*/
+      /*fixme should not api search when model is the already selected item*/
       val && this.querySelections(val);
     },
     model: function model(val) {
@@ -2428,6 +2439,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2467,17 +2502,17 @@ __webpack_require__.r(__webpack_exports__);
       }],
       item_indexes: ['agreement_id', 'post_collection_id', 'patient_id', 'doctor_id', 'doctor_id', 'date'],
       editedItem: {
-        agreement_id: 'None',
-        post_collection_id: 'None',
-        patient_id: 'None',
-        doctor_id: 'None',
+        agreement_id: null,
+        post_collection_id: null,
+        patient_id: null,
+        doctor_id: null,
         date: null
       },
       defaultItem: {
-        agreement_id: 'None',
-        post_collection_id: 'None',
-        patient_id: 'None',
-        doctor_id: 'None',
+        agreement_id: null,
+        post_collection_id: null,
+        patient_id: null,
+        doctor_id: null,
         date: null
       },
       form_select_inputs: {
@@ -2543,7 +2578,6 @@ __webpack_require__.r(__webpack_exports__);
       this.editedItem = item;
     },
     form_errors: function form_errors(response) {
-      /*fixme VeeValidate Validation errors not showing*/
       for (var field in response) {
         if (response.hasOwnProperty(field)) {
           this.$validator.errors.add({
@@ -49144,6 +49178,24 @@ var render = function() {
           _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
+          _c("v-text-field", {
+            attrs: {
+              "append-icon": "search",
+              label: "Search",
+              "single-line": "",
+              "hide-details": ""
+            },
+            model: {
+              value: _vm.search,
+              callback: function($$v) {
+                _vm.search = $$v
+              },
+              expression: "search"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-spacer"),
+          _vm._v(" "),
           _c(
             "v-dialog",
             {
@@ -49245,7 +49297,7 @@ var render = function() {
       _vm._v(" "),
       _c("v-data-table", {
         staticClass: "elevation-1",
-        attrs: { headers: _vm.headers, items: _vm.items },
+        attrs: { headers: _vm.headers, items: _vm.items, search: _vm.search },
         scopedSlots: _vm._u([
           {
             key: "items",
@@ -49508,14 +49560,6 @@ var render = function() {
               { attrs: { xs12: "", sm6: "", md4: "" } },
               [
                 _c("custom-select", {
-                  directives: [
-                    {
-                      name: "validate",
-                      rawName: "v-validate",
-                      value: "required",
-                      expression: "'required'"
-                    }
-                  ],
                   attrs: {
                     url: "api/agreementsBy",
                     label: "Agreement",
@@ -49552,7 +49596,8 @@ var render = function() {
                   attrs: {
                     url: "api/postcollectionsBy",
                     label: "Post Collection",
-                    display: "description"
+                    display: "description",
+                    name: "post_collection"
                   },
                   model: {
                     value: _vm.post_collection,
@@ -49561,7 +49606,11 @@ var render = function() {
                     },
                     expression: "post_collection"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _c("span", [
+                  _vm._v(_vm._s(_vm.errors.first("post_collection")))
+                ])
               ],
               1
             ),
@@ -49582,7 +49631,8 @@ var render = function() {
                   attrs: {
                     url: "api/patientsBy",
                     label: "Patient",
-                    display: "name"
+                    display: "name",
+                    name: "patient"
                   },
                   model: {
                     value: _vm.patient,
@@ -49591,7 +49641,9 @@ var render = function() {
                     },
                     expression: "patient"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.errors.first("patient")))])
               ],
               1
             ),
@@ -49612,7 +49664,8 @@ var render = function() {
                   attrs: {
                     url: "api/doctorsBy",
                     label: "Doctor",
-                    display: "name"
+                    display: "name",
+                    name: "doctor"
                   },
                   model: {
                     value: _vm.doctor,
@@ -49621,7 +49674,9 @@ var render = function() {
                     },
                     expression: "doctor"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.errors.first("doctor")))])
               ],
               1
             ),
@@ -49639,7 +49694,7 @@ var render = function() {
                       expression: "'required'"
                     }
                   ],
-                  attrs: { label: "Date" },
+                  attrs: { label: "Date", name: "date" },
                   model: {
                     value: _vm.editedItem.date,
                     callback: function($$v) {
@@ -49647,7 +49702,9 @@ var render = function() {
                     },
                     expression: "editedItem.date"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.errors.first("date")))])
               ],
               1
             )

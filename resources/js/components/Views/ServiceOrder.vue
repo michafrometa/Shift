@@ -13,9 +13,18 @@
         <template v-slot:form_content="{ crud }">
             <v-flex xs12 sm6 md4>
 
-                <custom-select
+                <!--<custom-select
                         url="api/agreementsBy"
                         v-validate="'required'"
+                        v-model="agreement"
+                        label="Agreement"
+                        display="description"
+                        name="agreement"
+                >
+                </custom-select>
+                <span>{{ errors.first('agreement') }}</span>-->
+                <custom-select
+                        url="api/agreementsBy"
                         v-model="agreement"
                         label="Agreement"
                         display="description"
@@ -33,8 +42,10 @@
                         v-model="post_collection"
                         label="Post Collection"
                         display="description"
+                        name="post_collection"
                 >
                 </custom-select>
+                <span>{{ errors.first('post_collection') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
 
@@ -44,8 +55,11 @@
                         v-model="patient"
                         label="Patient"
                         display="name"
+                        name="patient"
+
                 >
                 </custom-select>
+                <span>{{ errors.first('patient') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
                 <custom-select
@@ -54,12 +68,22 @@
                         v-model="doctor"
                         label="Doctor"
                         display="name"
+                        name="doctor"
                 >
                 </custom-select>
+                <span>{{ errors.first('doctor') }}</span>
             </v-flex>
             <v-flex xs12 sm6 md4>
-                <!--todo selected date has to be today on new item-->
-                <custom-datepicker v-validate="'required'" v-model="editedItem.date" label="Date"></custom-datepicker>
+                <!--todo selected date has to be today on new item
+                todo available dates should be from today on-->
+                <custom-datepicker
+                        v-validate="'required'"
+                        v-model="editedItem.date"
+                        label="Date"
+                        name="date"
+                ></custom-datepicker>
+                <span>{{ errors.first('date') }}</span>
+
             </v-flex>
         </template>
     </crud>
@@ -96,17 +120,17 @@
                 ],
                 item_indexes: ['agreement_id', 'post_collection_id', 'patient_id', 'doctor_id', 'doctor_id', 'date'],
                 editedItem: {
-                    agreement_id: 'None',
-                    post_collection_id: 'None',
-                    patient_id: 'None',
-                    doctor_id: 'None',
+                    agreement_id: null,
+                    post_collection_id: null,
+                    patient_id: null,
+                    doctor_id: null,
                     date: null
                 },
                 defaultItem: {
-                    agreement_id: 'None',
-                    post_collection_id: 'None',
-                    patient_id: 'None',
-                    doctor_id: 'None',
+                    agreement_id: null,
+                    post_collection_id: null,
+                    patient_id: null,
+                    doctor_id: null,
                     date: null
                 },
                 form_select_inputs: {
@@ -170,7 +194,6 @@
                 this.editedItem = item
             },
             form_errors(response) {
-                /*fixme VeeValidate Validation errors not showing*/
                 for (let field in response) {
                     if (response.hasOwnProperty(field)) {
                         this.$validator.errors.add({

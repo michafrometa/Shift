@@ -8,6 +8,14 @@
                     vertical
             ></v-divider>
             <v-spacer></v-spacer>
+            <v-text-field
+                    v-model="search"
+                    append-icon="search"
+                    label="Search"
+                    single-line
+                    hide-details
+            ></v-text-field>
+            <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
                 <template v-slot:activator="{ on }">
                     <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
@@ -36,6 +44,7 @@
         <v-data-table
                 :headers="headers"
                 :items="items"
+                :search="search"
                 class="elevation-1"
         >
             <template v-slot:items="props">
@@ -71,6 +80,7 @@
         inject: ['$validator'],
         name: "Crud",
         data: () => ({
+            search:'',
             dialog: false,
             items: [],
             editedIndex: -1,
@@ -163,6 +173,7 @@
 
             close() {
                 this.dialog = false
+                this.$validator.errors.clear();
                 setTimeout(() => {
                     this.$emit("fill_form", Object.assign({}, this.defaultItem))
                     this.editedIndex = -1

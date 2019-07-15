@@ -24,7 +24,10 @@ class ServiceOrderUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'agreement_id' => 'required|exists:shift_agreements,id',
+            'post_collection_id' => 'required|exists:shift_post_collections,id',
+            'patient_id' => 'required|exists:shift_patients,id',
+            'doctor_id' => 'required|exists:shift_doctors,id',
         ];
     }
 }
