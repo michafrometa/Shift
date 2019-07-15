@@ -5,7 +5,7 @@
         >
         </custom-snackbar>
         <v-toolbar flat color="white">
-            <v-toolbar-title>{{view_name}}</v-toolbar-title>
+            <v-toolbar-title><!--{{view_name}}-->{{ $t('messages.subjects.service_order') }}</v-toolbar-title>
             <v-divider
                     class="mx-2"
                     inset

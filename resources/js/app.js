@@ -1,60 +1,49 @@
 import es from "./locale/es";
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
+import VueInternalization from 'vue-i18n';
+import Locales from '../assets/js/vue-i18n-locales.generated';
+import Vuex from 'vuex';
 require('./bootstrap');
 import axios from "axios";
-
+import vuexI18n from 'vuex-i18n';
 window.Vue = require('vue');
-
 import Vuetify from 'vuetify';
-
 import VeeValidate, {Validator} from 'vee-validate';
-
-window.Vue.use(Vuetify);
-window.Vue.use(VeeValidate, {events: 'change|custom'});
-Validator.localize('es', es);
 import App from './components/App'
-
 import {createRouter} from './routes'
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+
+window.Vue.use(Vuex)
+const store = new Vuex.Store();
+window.Vue.use(vuexI18n.plugin,store);
+window.Vue.i18n.add('en', Locales.en);
+window.Vue.i18n.add('es', Locales.es);
+window.Vue.i18n.set('en');
+
+
+window.Vue.use(VeeValidate, {events: 'change|custom'});
+window.Vue.use(Vuetify);
+Validator.localize('es', es);
+
 
 Vue.component('App', require('./components/App.vue').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 const router = createRouter();
 
-window.isNull= function($value) {
-    return ($value === undefined) || ($value === null) || ($value === "") || ($value === '') /*|| ($value === 'None')|| ($value === 'none')*/
+window.isNull = function ($value) {
+    return ($value === undefined) || ($value === null) || ($value === "") || ($value === '')
 },
 
-window.async_call = function (url, data, method = 'get') {
-    return axios({
-        url: url,
-        data: data,
-        method: method
-    })
-}
+    window.async_call = function (url, data, method = 'get') {
+        return axios({
+            url: url,
+            data: data,
+            method: method
+        })
+    }
 
 const app = new Vue({
+    store,
     el: '#app',
     components: {App},
     router,
