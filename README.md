@@ -1,6 +1,4 @@
-#Shift web developer test
-
-
+# Shift web developer test
 
 ##### Dependencies
  
@@ -17,23 +15,25 @@ developed whit XAMPP Version 7.2.9
     
 #### Installation
 
-#####1.clone repo
+##### 1.clone repo
 
-#####2.open terminal on folder and type
+##### 2.open terminal on folder and type
  
         composer install
         npm install
         php artisan migrate:fresh --seed
         php artisan serve
 
-#####3.open the adress given by the console on browser
+##### 3.open the adress given by the console on browser
         
-###Technology used
+### Frameworks used
+
 Laravel 5.8
 
 Vuejs 2.5, Vuetify, Vuex
 
-###Features provided by the system
+### Features provided by the system
+
 Medical Exam Service order management
 
   
