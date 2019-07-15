@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PDOException;
 
 class ServiceOrderController extends Controller
 {
@@ -61,13 +62,21 @@ class ServiceOrderController extends Controller
      */
     public function index()
     {
-        return $this->service_order
-            ->with(array(
-                'agreement:id,description',
-                'post_collection:id,description',
-                'patient:id,name',
-                'doctor:id,name'
-            ))->orderBy('created_at', 'desc')->get();
+        try {
+            return $this->service_order
+                ->with(array(
+                    'agreement:id,description',
+                    'post_collection:id,description',
+                    'patient:id,name',
+                    'doctor:id,name'
+                ))->orderBy('created_at', 'desc')->get();
+        } catch (PDOException $exception) {
+            Log::error($exception->getMessage());
+            return response(__('messages.response.database_issue'), Response::HTTP_SERVICE_UNAVAILABLE);
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -80,7 +89,8 @@ class ServiceOrderController extends Controller
     {
         try {
             return DB::transaction(function () use ($request) {
-                $this->service_order->fill($request->all())
+                $this->service_order
+                    ->fill($request->all())
                     ->save();
                 return response(__('messages.response.save'), Response::HTTP_CREATED);
             });
@@ -125,18 +135,18 @@ class ServiceOrderController extends Controller
     public function update(ServiceOrderUpdateRequest $request, $id)
     {
         try {
-            $that=$this;
-            return DB::transaction(function () use ($request,$id,$that) {
+            $that = $this;
+            return DB::transaction(function () use ($request, $id, $that) {
 
-               $this->service_order
+                $this->service_order
                     ->findOrFail($id)
                     ->update($request->all());
 
-                Log::info('shift_' . $that::SUBJECT . 's whit id= ' . $request->input('id') .' updated');
+                Log::info('shift_' . $that::SUBJECT . 's whit id= ' . $request->input('id') . ' updated');
                 return response(__('messages.response.update'));
             });
         } catch (ModelNotFoundException $exception) {
-            return response(__('messages.response.no_found'), Response::HTTP_NOT_FOUND);
+            return response(__('messages.response.not_found'), Response::HTTP_NOT_FOUND);
         } catch (Exception $exception) {
             Log::error($exception->getMessage());
             return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -152,7 +162,7 @@ class ServiceOrderController extends Controller
     {
         try {
             $this->service_order::destroy($id);
-            Log::info(__('messages.logs.delete',  ['subject' => $this::SUBJECT, 'id'=>$id]));
+            Log::info(__('messages.logs.delete', ['subject' => $this::SUBJECT, 'id' => $id]));
             return response(trans_choice('messages.response.delete', 1));
         } catch (Exception $exception) {
             Log::error($exception->getMessage());

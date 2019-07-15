@@ -27,6 +27,7 @@ return [
         'update' => 'Element updated correctly.',
         'delete' => 'Element deleted correctly.| Elements deleted correctly.',
         'error' => 'Error performing operation.',
+        'database_issue'=>'Error performing operation. Database issues',
         'not_found' => ':subject not found.',
     ],
     'logs'=>[

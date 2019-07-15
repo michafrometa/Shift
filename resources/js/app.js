@@ -12,6 +12,7 @@ import axios from "axios";
 window.Vue = require('vue');
 
 import Vuetify from 'vuetify';
+
 import VeeValidate, {Validator} from 'vee-validate';
 
 window.Vue.use(Vuetify);

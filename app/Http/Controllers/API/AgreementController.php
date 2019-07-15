@@ -94,7 +94,7 @@ class AgreementController extends Controller
                 return response(__('messages.response.update'));
             });
         } catch (ModelNotFoundException $exception) {
-            return response(__('messages.response.no_found'), Response::HTTP_NOT_FOUND);
+            return response(__('messages.response.not_found'), Response::HTTP_NOT_FOUND);
         } catch (Exception $exception) {
             Log::error($exception->getMessage());
             return response(__('messages.response.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
