@@ -42,7 +42,7 @@ Vuejs 2.5, Vuetify, Vuex
 Medical Exam Service order management
 
   
-### My own version of the class diagram you propose
+### My own version of the class diagram you proposed
 
 ![my custom diagram](https://github.com/michafrometa/Shift/blob/master/public/img/class_diagram.jpg)
 
