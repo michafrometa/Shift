@@ -13,7 +13,7 @@ export function createRouter() {
     const router = new VueRouter({
         routes: [{
             path: '/',
-            redirect: '/home',
+            redirect: '/service_order',
             component: {
                 render(c) {
                     return c('router-view')

@@ -32,6 +32,7 @@ return [
     'delete'=>'delete',
     'cancel'=>'cancelar',
     'date'=>'data',
+    'home'=>'casa',
     'actions'=>'ações',
     'response' => [
         'save' => 'Elemento salvo corretamente.',

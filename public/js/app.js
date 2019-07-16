@@ -1925,7 +1925,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      drawer: null,
+      drawer: false,
       drawerRight: null,
       right: false,
       left: false
@@ -2590,7 +2590,7 @@ __webpack_require__.r(__webpack_exports__);
         text: this.$t('messages.date'),
         value: 'date'
       }, {
-        text: 'Actions',
+        text: this.$t('messages.actions'),
         value: 'name',
         sortable: false,
         no_td: true
@@ -49200,7 +49200,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("v-toolbar-title", [_vm._v("Application")])
+          _c("v-toolbar-title", [_vm._v("Shift")])
         ],
         1
       ),
@@ -92660,6 +92660,7 @@ __webpack_require__.r(__webpack_exports__);
       "cancel": "cancel",
       "date": "date",
       "actions": "actions",
+      "home": "home",
       "response": {
         "save": "Element saved correctly.",
         "update": "Element updated correctly.",
@@ -92852,6 +92853,7 @@ __webpack_require__.r(__webpack_exports__);
       "sure_to_delete": "Está seguro que desea eliminar este elemento?",
       "reset": "recargar",
       "actions": "acciones",
+      "home": "casa",
       "date": "fecha",
       "response": {
         "save": "elemento guardado correctamente.",
@@ -93037,6 +93039,7 @@ __webpack_require__.r(__webpack_exports__);
       "delete": "delete",
       "cancel": "cancelar",
       "date": "data",
+      "home": "casa",
       "actions": "ações",
       "response": {
         "save": "Elemento salvo corretamente.",
@@ -94090,7 +94093,7 @@ function createRouter() {
   var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
     routes: [{
       path: '/',
-      redirect: '/home',
+      redirect: '/service_order',
       component: {
         render: function render(c) {
           return c('router-view');

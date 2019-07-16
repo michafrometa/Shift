@@ -31,6 +31,7 @@ export default {
             "cancel": "cancel",
             "date": "date",
             "actions": "actions",
+            "home": "home",
             "response": {
                 "save": "Element saved correctly.",
                 "update": "Element updated correctly.",
@@ -223,6 +224,7 @@ export default {
             "sure_to_delete": "Está seguro que desea eliminar este elemento?",
             "reset": "recargar",
             "actions": "acciones",
+            "home": "casa",
             "date": "fecha",
             "response": {
                 "save": "elemento guardado correctamente.",
@@ -408,6 +410,7 @@ export default {
             "delete": "delete",
             "cancel": "cancelar",
             "date": "data",
+            "home": "casa",
             "actions": "ações",
             "response": {
                 "save": "Elemento salvo corretamente.",

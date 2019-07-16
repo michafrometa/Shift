@@ -26,7 +26,7 @@
         </v-navigation-drawer>
         <v-toolbar color="indigo" dark fixed app>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-            <v-toolbar-title>Application</v-toolbar-title>
+            <v-toolbar-title>Shift</v-toolbar-title>
         </v-toolbar>
         <v-content>
             <v-container fluid fill-height>
@@ -55,7 +55,7 @@
             ServiceOrder
         },
         data: () => ({
-            drawer: null,
+            drawer: false,
             drawerRight: null,
             right: false,
             left: false

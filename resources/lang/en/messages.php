@@ -33,6 +33,7 @@ return [
     'cancel'=>'cancel',
     'date'=>'date',
     'actions'=>'actions',
+    'home'=>'home',
     'response' => [
         'save' => 'Element saved correctly.',
         'update' => 'Element updated correctly.',

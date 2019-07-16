@@ -38,6 +38,8 @@ Vuejs 2.5, Vuetify, Vuex
 Medical Exam Service order management
 
   
-PD : Started working on the rest of the exam but no time. Sorry
+### My own version of the class diagram you propose
 
-![alt text](https://github.com/michafrometa/Shift/blob/master/public/img/class_diagram.jpg)
+![my custom diagram](https://github.com/michafrometa/Shift/blob/master/public/img/class_diagram.jpg)
+
+PD: Tried to work on the rest of the exam but no time, sorry.

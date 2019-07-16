@@ -97,7 +97,7 @@
                     {text: this.$t('messages.patient'), value: 'patient.name'},
                     {text: this.$t('messages.doctor'), value: 'doctor.name'},
                     {text: this.$t('messages.date'), value: 'date'},
-                    {text: 'Actions', value: 'name', sortable: false, no_td: true}
+                    {text: this.$t('messages.actions'), value: 'name', sortable: false, no_td: true}
                 ],
 
                 editedItem: {
