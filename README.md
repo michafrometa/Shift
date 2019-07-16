@@ -19,7 +19,7 @@ developed whit XAMPP Version 7.2.9
 
 
 ##### 1. place into cloned folder and generate .env file. Content should be [like this](https://github.com/laravel/laravel/blob/master/.env.example)
-
+ If you follow this guide you should only need to worry about database credentials
 
 ##### 2.open terminal on folder and type
  
