@@ -18,10 +18,15 @@ developed whit XAMPP Version 7.2.9
 
 ##### 1.clone repo
 
+
+##### 1. place into cloned folder and generate .env file. Content should be [like this](https://github.com/laravel/laravel/blob/master/.env.example)
+
+
 ##### 2.open terminal on folder and type
  
         composer install
         npm install
+        php artisan key:generate
         php artisan migrate:fresh --seed
         php artisan serve
 
