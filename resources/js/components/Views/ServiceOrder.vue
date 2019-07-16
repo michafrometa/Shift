@@ -92,11 +92,11 @@
                 view_name: "service_order",
                 crud_action: '',
                 headers: [
-                    {text: 'Agreement', align: 'left', value: 'agreement.name'},
-                    {text: 'Post Collection', value: 'post_collection.description'},
-                    {text: 'Patient', value: 'patient.name'},
-                    {text: 'Doctor', value: 'doctor.name'},
-                    {text: 'Date', value: 'date'},
+                    {text: this.$t('messages.agreement'), align: 'left', value: 'agreement.name'},
+                    {text: this.$t('messages.post_collection'), value: 'post_collection.description'},
+                    {text: this.$t('messages.patient'), value: 'patient.name'},
+                    {text: this.$t('messages.doctor'), value: 'doctor.name'},
+                    {text: this.$t('messages.date'), value: 'date'},
                     {text: 'Actions', value: 'name', sortable: false, no_td: true}
                 ],
 

@@ -2028,6 +2028,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   inject: ['$validator'],
@@ -2053,7 +2066,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.url ? this.url : 'api/' + this.view_name;
     },
     formTitle: function formTitle() {
-      return this.editedIndex === -1 ? this.$t('messages.new_item') : this.$t('messages.edit_item');
+      return this.editedIndex === -1 ? this.$t('messages.new_item') : this.action === 'delete' ? this.$t('messages.delete_item') : this.$t('messages.edit_item');
     }
   },
   created: function created() {
@@ -2088,29 +2101,19 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
-      var _this = this;
-
       this.set_action("delete");
-      var index = this.items.indexOf(item);
-      confirm(this.$t('messages.sure_to_delete')) && async_call(this.real_url + '/' + item.id, {
-        id: item.id
-      }, 'delete').then(function (item) {
-        _this.notify(item.data);
-
-        _this.initialize();
-      })["catch"](function (err) {
-        _this.notify(err.response.data, 'error');
-      });
+      this.editedIndex = item.id;
+      this.dialog = true;
     },
     close: function close() {
-      var _this2 = this;
+      var _this = this;
 
       this.dialog = false;
       this.$validator.errors.clear();
       setTimeout(function () {
-        _this2.$emit("fill_form", Object.assign({}, _this2.defaultItem));
+        _this.$emit("fill_form", Object.assign({}, _this.defaultItem));
 
-        _this2.editedIndex = -1;
+        _this.editedIndex = -1;
       }, 300);
     },
     notify: function notify(text) {
@@ -2121,32 +2124,43 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     save: function save() {
-      var _this3 = this;
+      var _this2 = this;
 
-      this.$validator.validate().then(function (result) {
+      if (this.action === 'delete') {
+        this.dialog = false;
+        async_call(this.real_url + '/' + this.editedIndex, {
+          id: this.editedIndex
+        }, 'delete').then(function (item) {
+          _this2.notify(item.data);
+
+          _this2.initialize();
+        })["catch"](function (err) {
+          _this2.notify(err.response.data, 'error');
+        });
+      } else this.$validator.validate().then(function (result) {
         if (result) {
-          if (_this3.editedIndex > -1) {
-            async_call(_this3.real_url + '/' + _this3.editedItem.id, _this3.editedItem, 'put').then(function (item) {
-              _this3.notify(item.data);
+          if (_this2.editedIndex > -1) {
+            async_call(_this2.real_url + '/' + _this2.editedItem.id, _this2.editedItem, 'put').then(function (item) {
+              _this2.notify(item.data);
 
-              _this3.initialize();
+              _this2.initialize();
 
-              _this3.close();
+              _this2.close();
             })["catch"](function (err) {
-              _this3.notify(err.response.data, 'error');
+              _this2.notify(err.response.data, 'error');
             });
           } else {
-            async_call(_this3.real_url, _this3.editedItem, 'post').then(function (item) {
-              _this3.notify(item.data);
+            async_call(_this2.real_url, _this2.editedItem, 'post').then(function (item) {
+              _this2.notify(item.data);
 
-              _this3.initialize();
+              _this2.initialize();
 
-              _this3.close();
+              _this2.close();
             })["catch"](function (err) {
-              _this3.notify(err.response.data, 'error');
+              _this2.notify(err.response.data, 'error');
             });
           }
-        } else _this3.$emit("form_errors", result.response !== undefined ? result.response.data.errors : result);
+        } else _this2.$emit("form_errors", result.response !== undefined ? result.response.data.errors : result);
       });
     },
     set_action: function set_action(action) {
@@ -2166,12 +2180,12 @@ __webpack_require__.r(__webpack_exports__);
       return grandchild;
     },
     initialize: function initialize() {
-      var _this4 = this;
+      var _this3 = this;
 
       async_call(this.real_url).then(function (item) {
-        _this4.items = item.data;
+        _this3.items = item.data;
       })["catch"](function (err) {
-        _this4.notify(err.response.data, 'error');
+        _this3.notify(err.response.data, 'error');
       });
     }
   }
@@ -2560,20 +2574,20 @@ __webpack_require__.r(__webpack_exports__);
       view_name: "service_order",
       crud_action: '',
       headers: [{
-        text: 'Agreement',
+        text: this.$t('messages.agreement'),
         align: 'left',
         value: 'agreement.name'
       }, {
-        text: 'Post Collection',
+        text: this.$t('messages.post_collection'),
         value: 'post_collection.description'
       }, {
-        text: 'Patient',
+        text: this.$t('messages.patient'),
         value: 'patient.name'
       }, {
-        text: 'Doctor',
+        text: this.$t('messages.doctor'),
         value: 'doctor.name'
       }, {
-        text: 'Date',
+        text: this.$t('messages.date'),
         value: 'date'
       }, {
         text: 'Actions',
@@ -49332,25 +49346,39 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c(
-                        "v-container",
-                        { attrs: { "grid-list-md": "" } },
-                        [
-                          _c(
-                            "v-layout",
-                            { attrs: { wrap: "" } },
-                            [_vm._t("form_content", null, { crud: this })],
-                            2
+                  _vm.action === "delete"
+                    ? [
+                        _c("v-card-text", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.$t("messages.sure_to_delete")) +
+                              "\n                    "
                           )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
+                        ])
+                      ]
+                    : [
+                        _c(
+                          "v-card-text",
+                          [
+                            _c(
+                              "v-container",
+                              { attrs: { "grid-list-md": "" } },
+                              [
+                                _c(
+                                  "v-layout",
+                                  { attrs: { wrap: "" } },
+                                  [
+                                    _vm._t("form_content", null, { crud: this })
+                                  ],
+                                  2
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
                   _vm._v(" "),
                   _c(
                     "v-card-actions",
@@ -49363,22 +49391,31 @@ var render = function() {
                           attrs: { color: "blue darken-1", flat: "" },
                           on: { click: _vm.close }
                         },
-                        [_vm._v("Cancel")]
+                        [_vm._v(_vm._s(_vm.$t("messages.cancel")))]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { color: "blue darken-1", flat: "" },
-                          on: { click: _vm.save }
-                        },
-                        [_vm._v("Save")]
-                      )
+                      _vm.action !== "delete"
+                        ? _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "blue darken-1", flat: "" },
+                              on: { click: _vm.save }
+                            },
+                            [_vm._v(_vm._s(_vm.$t("messages.save")))]
+                          )
+                        : _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "red darken-1", flat: "" },
+                              on: { click: _vm.save }
+                            },
+                            [_vm._v(_vm._s(_vm.$t("messages.i_am_sure")))]
+                          )
                     ],
                     1
                   )
                 ],
-                1
+                2
               )
             ],
             1
@@ -49399,7 +49436,11 @@ var render = function() {
                   return !header.no_td
                     ? _c("td", [
                         _vm._v(
-                          _vm._s(_vm.string_to_array(header.value, props.item))
+                          "\n                 " +
+                            _vm._s(
+                              _vm.string_to_array(header.value, props.item)
+                            ) +
+                            "\n            "
                         )
                       ])
                     : _vm._e()
@@ -49420,7 +49461,13 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("\n                    edit\n                ")]
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.$t("messages.edit")) +
+                            "\n                "
+                        )
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -49433,7 +49480,13 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("\n                    delete\n                ")]
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.$t("messages.delete")) +
+                            "\n                "
+                        )
+                      ]
                     )
                   ],
                   1
@@ -92597,8 +92650,16 @@ __webpack_require__.r(__webpack_exports__);
       "search": "search",
       "new_item": "new item",
       "edit_item": "edit item",
+      "delete_item": "delete item",
       "sure_to_delete": "Are you sure you want to delete this item?",
+      "i_am_sure": "i am sure",
       "reset": "reset",
+      "edit": "edit",
+      "save": "save",
+      "delete": "delete",
+      "cancel": "cancel",
+      "date": "date",
+      "actions": "actions",
       "response": {
         "save": "Element saved correctly.",
         "update": "Element updated correctly.",
@@ -92786,8 +92847,12 @@ __webpack_require__.r(__webpack_exports__);
       "search": "buscar",
       "new_item": "nuevo elemento",
       "edit_item": "editar elemento",
+      "delete_item": "eliminar item",
+      "i_am_sure": "estoy seguro",
       "sure_to_delete": "Está seguro que desea eliminar este elemento?",
       "reset": "recargar",
+      "actions": "acciones",
+      "date": "fecha",
       "response": {
         "save": "elemento guardado correctamente.",
         "update": "elemento actualizado correctamente.",
@@ -92816,6 +92881,203 @@ __webpack_require__.r(__webpack_exports__);
         "delete": "elemento eliminado correctamente.",
         "error": "error al intentar la operación, inténtelo nuevamente",
         "not_found": "{subject} no encontrado."
+      }
+    },
+    "pagination": {
+      "previous": "&laquo; Previous",
+      "next": "Next &raquo;"
+    },
+    "passwords": {
+      "password": "Passwords must be at least eight characters and match the confirmation.",
+      "reset": "Your password has been reset!",
+      "sent": "We have e-mailed your password reset link!",
+      "token": "This password reset token is invalid.",
+      "user": "We can't find a user with that e-mail address."
+    },
+    "validation": {
+      "accepted": "The {attribute} must be accepted.",
+      "active_url": "The {attribute} is not a valid URL.",
+      "after": "The {attribute} must be a date after {date}.",
+      "after_or_equal": "The {attribute} must be a date after or equal to {date}.",
+      "alpha": "The {attribute} may only contain letters.",
+      "alpha_dash": "The {attribute} may only contain letters, numbers, dashes and underscores.",
+      "alpha_num": "The {attribute} may only contain letters and numbers.",
+      "array": "The {attribute} must be an array.",
+      "before": "The {attribute} must be a date before {date}.",
+      "before_or_equal": "The {attribute} must be a date before or equal to {date}.",
+      "between": {
+        "numeric": "The {attribute} must be between {min} and {max}.",
+        "file": "The {attribute} must be between {min} and {max} kilobytes.",
+        "string": "The {attribute} must be between {min} and {max} characters.",
+        "array": "The {attribute} must have between {min} and {max} items."
+      },
+      "boolean": "The {attribute} field must be true or false.",
+      "confirmed": "The {attribute} confirmation does not match.",
+      "date": "The {attribute} is not a valid date.",
+      "date_equals": "The {attribute} must be a date equal to {date}.",
+      "date_format": "The {attribute} does not match the format {format}.",
+      "different": "The {attribute} and {other} must be different.",
+      "digits": "The {attribute} must be {digits} digits.",
+      "digits_between": "The {attribute} must be between {min} and {max} digits.",
+      "dimensions": "The {attribute} has invalid image dimensions.",
+      "distinct": "The {attribute} field has a duplicate value.",
+      "email": "The {attribute} must be a valid email address.",
+      "ends_with": "The {attribute} must end with one of the following: {values}",
+      "exists": "The selected {attribute} is invalid.",
+      "file": "The {attribute} must be a file.",
+      "filled": "The {attribute} field must have a value.",
+      "gt": {
+        "numeric": "The {attribute} must be greater than {value}.",
+        "file": "The {attribute} must be greater than {value} kilobytes.",
+        "string": "The {attribute} must be greater than {value} characters.",
+        "array": "The {attribute} must have more than {value} items."
+      },
+      "gte": {
+        "numeric": "The {attribute} must be greater than or equal {value}.",
+        "file": "The {attribute} must be greater than or equal {value} kilobytes.",
+        "string": "The {attribute} must be greater than or equal {value} characters.",
+        "array": "The {attribute} must have {value} items or more."
+      },
+      "image": "The {attribute} must be an image.",
+      "in": "The selected {attribute} is invalid.",
+      "in_array": "The {attribute} field does not exist in {other}.",
+      "integer": "The {attribute} must be an integer.",
+      "ip": "The {attribute} must be a valid IP address.",
+      "ipv4": "The {attribute} must be a valid IPv4 address.",
+      "ipv6": "The {attribute} must be a valid IPv6 address.",
+      "json": "The {attribute} must be a valid JSON string.",
+      "lt": {
+        "numeric": "The {attribute} must be less than {value}.",
+        "file": "The {attribute} must be less than {value} kilobytes.",
+        "string": "The {attribute} must be less than {value} characters.",
+        "array": "The {attribute} must have less than {value} items."
+      },
+      "lte": {
+        "numeric": "The {attribute} must be less than or equal {value}.",
+        "file": "The {attribute} must be less than or equal {value} kilobytes.",
+        "string": "The {attribute} must be less than or equal {value} characters.",
+        "array": "The {attribute} must not have more than {value} items."
+      },
+      "max": {
+        "numeric": "The {attribute} may not be greater than {max}.",
+        "file": "The {attribute} may not be greater than {max} kilobytes.",
+        "string": "The {attribute} may not be greater than {max} characters.",
+        "array": "The {attribute} may not have more than {max} items."
+      },
+      "mimes": "The {attribute} must be a file of type: {values}.",
+      "mimetypes": "The {attribute} must be a file of type: {values}.",
+      "min": {
+        "numeric": "The {attribute} must be at least {min}.",
+        "file": "The {attribute} must be at least {min} kilobytes.",
+        "string": "The {attribute} must be at least {min} characters.",
+        "array": "The {attribute} must have at least {min} items."
+      },
+      "not_in": "The selected {attribute} is invalid.",
+      "not_regex": "The {attribute} format is invalid.",
+      "numeric": "The {attribute} must be a number.",
+      "present": "The {attribute} field must be present.",
+      "regex": "The {attribute} format is invalid.",
+      "required": "The {attribute} field is required.",
+      "required_if": "The {attribute} field is required when {other} is {value}.",
+      "required_unless": "The {attribute} field is required unless {other} is in {values}.",
+      "required_with": "The {attribute} field is required when {values} is present.",
+      "required_with_all": "The {attribute} field is required when {values} are present.",
+      "required_without": "The {attribute} field is required when {values} is not present.",
+      "required_without_all": "The {attribute} field is required when none of {values} are present.",
+      "same": "The {attribute} and {other} must match.",
+      "size": {
+        "numeric": "The {attribute} must be {size}.",
+        "file": "The {attribute} must be {size} kilobytes.",
+        "string": "The {attribute} must be {size} characters.",
+        "array": "The {attribute} must contain {size} items."
+      },
+      "starts_with": "The {attribute} must start with one of the following: {values}",
+      "string": "The {attribute} must be a string.",
+      "timezone": "The {attribute} must be a valid zone.",
+      "unique": "The {attribute} has already been taken.",
+      "uploaded": "The {attribute} failed to upload.",
+      "url": "The {attribute} format is invalid.",
+      "uuid": "The {attribute} must be a valid UUID.",
+      "custom": {
+        "attribute-name": {
+          "rule-name": "custom-message"
+        }
+      },
+      "attributes": []
+    }
+  },
+  "pt": {
+    "auth": {
+      "failed": "Essas credenciais não correspondem aos nossos registros.",
+      "throttle": "Muitas tentativas de login. Por favor, tente novamente em: segundos segundos."
+    },
+    "messages": {
+      "service_order": "ordem de serviço",
+      "patient": "paciente",
+      "doctor": "medico",
+      "post_collection": "posto coleta",
+      "agreement": "convenio",
+      "exam": "exame",
+      "sector": "setor",
+      "biologic_material": "material biologico",
+      "neighborhood": "bairro",
+      "city": "cidade",
+      "specialty": "especialidade",
+      "gender": "sexo",
+      "federated_unit": "Unidade da Federação",
+      "search": "procurar",
+      "new_item": "novo item",
+      "edit_item": "editar item",
+      "delete_item": "deletar item",
+      "sure_to_delete": "Tem certeza de que deseja excluir este item?",
+      "i_am_sure": "eu tenho certeza",
+      "reset": "restabelecer",
+      "edit": "editar",
+      "save": "salvar",
+      "delete": "delete",
+      "cancel": "cancelar",
+      "date": "data",
+      "actions": "ações",
+      "response": {
+        "save": "Elemento salvo corretamente.",
+        "update": "Element updated correctly.",
+        "delete": "Elemento atualizado corretamente.",
+        "error": "Error performing operation.",
+        "database_issue": "Erro ao executar a operação. Problemas de banco de dados.",
+        "not_found": "{subject} não encontrado."
+      },
+      "logs": {
+        "save": "fileira de shift_{subject} com id = {id} salvou corretamente.",
+        "update": "fileira de shift_{subject} com id = {id} atualizada corretamente.",
+        "delete": "fileira de shift_{subject} com id = {id} deletada corretamente."
+      }
+    },
+    "messages_whit_plurals": {
+      "service_order": "service order|service orders",
+      "patient": "patient|patients",
+      "doctor": "doctor|doctors",
+      "post_collection": "post collection|post collections",
+      "agreement": "agreement|agreements",
+      "exam": "exam|exams",
+      "sector": "sector|sectors",
+      "biologic_material": "biologic material|biologic materials",
+      "neighborhood": "neighborhood|neighborhoods",
+      "city": "city|cities",
+      "specialty": "specialty|specialties",
+      "gender": "gender|genders",
+      "federated_unit": "federated unit|federated units",
+      "response": {
+        "save": "Element saved correctly.",
+        "update": "Element updated correctly.",
+        "delete": "Element deleted correctly.| Elements deleted correctly.",
+        "error": "Error performing operation.",
+        "database_issue": "Error performing operation. Database issues",
+        "not_found": "{subject} not found."
+      },
+      "logs": {
+        "save": "row from shift_{subject} with id = {id} saved correctly.",
+        "update": "row from shift_{subject} with id = {id} updated correctly.",
+        "delete": "row from shift_{subject} with id = {id} deleted correctly."
       }
     },
     "pagination": {
@@ -92983,7 +93245,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store();
 window.Vue.use(vuex_i18n__WEBPACK_IMPORTED_MODULE_4__["default"].plugin, store);
 window.Vue.i18n.add('en', _assets_js_vue_i18n_locales_generated__WEBPACK_IMPORTED_MODULE_1__["default"].en);
 window.Vue.i18n.add('es', _assets_js_vue_i18n_locales_generated__WEBPACK_IMPORTED_MODULE_1__["default"].es);
-window.Vue.i18n.set('en');
+window.Vue.i18n.add('pt', _assets_js_vue_i18n_locales_generated__WEBPACK_IMPORTED_MODULE_1__["default"].pt);
+window.Vue.i18n.set('pt');
 window.Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_6__["default"], {
   events: 'change|custom'
 });

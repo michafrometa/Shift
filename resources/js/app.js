@@ -17,7 +17,8 @@ const store = new Vuex.Store();
 window.Vue.use(vuexI18n.plugin,store);
 window.Vue.i18n.add('en', Locales.en);
 window.Vue.i18n.add('es', Locales.es);
-window.Vue.i18n.set('en');
+window.Vue.i18n.add('pt', Locales.pt);
+window.Vue.i18n.set('pt');
 
 
 window.Vue.use(VeeValidate, {events: 'change|custom'});

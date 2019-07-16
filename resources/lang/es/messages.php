@@ -23,8 +23,12 @@ return [
     'search'=>'buscar',
     'new_item'=>'nuevo elemento',
     'edit_item'=>'editar elemento',
+    'delete_item'=>'eliminar item',
+    'i_am_sure'=>'estoy seguro',
     'sure_to_delete'=>'Está seguro que desea eliminar este elemento?',
     'reset'=>'recargar',
+    'actions'=>'acciones',
+    'date'=>'fecha',
     'response' => [
         'save' => 'elemento guardado correctamente.',
         'update' => 'elemento actualizado correctamente.',

@@ -29,18 +29,28 @@
                         <span class="headline">{{ formTitle }}</span>
                     </v-card-title>
 
-                    <v-card-text>
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-                                <slot name="form_content" v-bind:crud="this"></slot>
-                            </v-layout>
-                        </v-container>
-                    </v-card-text>
+                    <template v-if="action==='delete'">
+                        <v-card-text>
+                            {{$t('messages.sure_to_delete')}}
+                        </v-card-text>
+                    </template>
+                    <template v-else>
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
+                                    <slot name="form_content" v-bind:crud="this"></slot>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+
+                    </template>
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                        <v-btn color="blue darken-1" flat @click="close">{{$t('messages.cancel')}}</v-btn>
+
+                        <v-btn v-if="action!=='delete' "color="blue darken-1" flat @click="save">{{$t('messages.save')}}</v-btn>
+                        <v-btn v-else color="red darken-1" flat @click="save">{{$t('messages.i_am_sure')}}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -51,8 +61,11 @@
                 :search="search"
                 class="elevation-1"
         >
+            <!--todo capitalize dictionary data -->
             <template v-slot:items="props">
-                <td v-for="header in headers" v-if="!header.no_td">{{string_to_array(header.value,props.item)}}</td>
+                <td v-for="header in headers" v-if="!header.no_td">
+                     {{string_to_array(header.value,props.item)}}
+                </td>
 
                 <td class="justify-center layout px-0">
                     <v-icon
@@ -60,13 +73,13 @@
                             class="mr-2"
                             @click="editItem(props.item)"
                     >
-                        edit
+                        {{$t('messages.edit')}}
                     </v-icon>
                     <v-icon
                             small
                             @click="deleteItem(props.item)"
                     >
-                        delete
+                        {{$t('messages.delete')}}
                     </v-icon>
                 </td>
             </template>
@@ -103,7 +116,7 @@
                 return this.url ? this.url : 'api/' + this.view_name
             },
             formTitle() {
-                return this.editedIndex === -1 ? this.$t('messages.new_item') : this.$t('messages.edit_item')
+                return this.editedIndex === -1 ? this.$t('messages.new_item') : this.action==='delete' ? this.$t('messages.delete_item'): this.$t('messages.edit_item')
             }
         },
 
@@ -141,16 +154,9 @@
             },
             deleteItem(item) {
                 this.set_action("delete")
-                const index = this.items.indexOf(item)
-                confirm(this.$t('messages.sure_to_delete')) &&
+                this.editedIndex = item.id
+                this.dialog = true
 
-                async_call(this.real_url + '/' + item.id, {id: item.id}, 'delete')
-                    .then((item) => {
-                        this.notify(item.data)
-                        this.initialize()
-                    }).catch((err) => {
-                    this.notify(err.response.data, 'error')
-                });
             },
 
             close() {
@@ -168,40 +174,50 @@
                 }
             },
             save() {
-                this.$validator.validate().then(result => {
-                    if (result) {
-                        if (this.editedIndex > -1) {
-                            async_call(this.real_url + '/' + this.editedItem.id, this.editedItem, 'put')
-                                .then((item) => {
+                if (this.action === 'delete') {
+                    this.dialog = false
+                    async_call(this.real_url + '/' + this.editedIndex, {id: this.editedIndex}, 'delete')
+                        .then((item) => {
+                            this.notify(item.data)
+                            this.initialize()
+                        }).catch((err) => {
+                        this.notify(err.response.data, 'error')
+                    });
+                } else
+                    this.$validator.validate().then(result => {
+                        if (result) {
+                            if (this.editedIndex > -1) {
+                                async_call(this.real_url + '/' + this.editedItem.id, this.editedItem, 'put')
+                                    .then((item) => {
 
-                                    this.notify(item.data)
-                                    this.initialize()
-                                    this.close()
-                                }).catch((err) => {
-                                this.notify(err.response.data, 'error')
-                            });
-                        } else {
-                            async_call(this.real_url, this.editedItem, 'post')
-                                .then((item) => {
-                                    this.notify(item.data)
-                                    this.initialize()
-                                    this.close()
-                                }).catch((err) => {
-                                this.notify(err.response.data, 'error')
-                            });
-                        }
-                    } else
-                        this.$emit("form_errors", (result.response !== undefined) ? result.response.data.errors : result);
-                })
+                                        this.notify(item.data)
+                                        this.initialize()
+                                        this.close()
+                                    }).catch((err) => {
+                                    this.notify(err.response.data, 'error')
+                                });
+                            } else {
+                                async_call(this.real_url, this.editedItem, 'post')
+                                    .then((item) => {
+                                        this.notify(item.data)
+                                        this.initialize()
+                                        this.close()
+                                    }).catch((err) => {
+                                    this.notify(err.response.data, 'error')
+                                });
+                            }
+                        } else
+                            this.$emit("form_errors", (result.response !== undefined) ? result.response.data.errors : result);
+                    })
             },
             set_action(action) {
                 this.action = action
                 this.$emit('update:action', action)
             },
+
             /*
           Solving issue handling nested object referencing by string
           https://stackoverflow.com/a/23149700/10326123*/
-
             string_to_array(pathString, jsonObj) {
                 var pathArray = pathString.split(".");
                 var grandchild = jsonObj;

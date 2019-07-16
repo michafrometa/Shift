@@ -1,6 +1,7 @@
 # Shift web developer test
+Sistem to manage Service Order of a hospital's biological tests lab
 
-##### Dependencies
+#### Dependencies
  
     
 -[nodejs](https://nodejs.org/dist/v10.16.0/node-v10.16.0-x64.msi)
@@ -13,7 +14,7 @@
     
 developed whit XAMPP Version 7.2.9
     
-#### Installation
+### Installation
 
 ##### 1.clone repo
 
