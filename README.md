@@ -38,4 +38,6 @@ Vuejs 2.5, Vuetify, Vuex
 Medical Exam Service order management
 
   
+PD : Started working on the rest of the exam but no time. Sorry
 
+![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
