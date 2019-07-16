@@ -10,7 +10,7 @@
     >
         <template v-slot:form_content="{ crud }">
             <v-flex xs12 sm6 md4>
-
+                <!--todo internationalization for error messages -->
                 <custom-select
                         url="api/agreementsBy"
                         v-validate="'required'"
