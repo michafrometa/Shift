@@ -40,4 +40,4 @@ Medical Exam Service order management
   
 PD : Started working on the rest of the exam but no time. Sorry
 
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://github.com/michafrometa/Shift/blob/master/public/img/class_diagram.jpg)
